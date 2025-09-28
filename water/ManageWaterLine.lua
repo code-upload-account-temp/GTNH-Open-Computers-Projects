@@ -135,8 +135,9 @@ for addr, v in pairs(transposers) do
         if inventorySize ~= nil and inventorySize > 0 then
             local invName = transposer.getInventoryName(sideNum)
             -- Ignore all inventories that are not ingredient buffers or interfaces or dual interfaces
-            if invName == ME_INGREDIENT_BUFFER_NAME then
-                -- ingredient buffer is always an output
+            if invName == ME_INGREDIENT_BUFFER_NAME or inventorySize == 1 then
+                -- ingredient buffer is always a machine input
+                -- single-slot inventory (e.g. lens housing) is also input
                 solids.inputBus.present = true
                 solids.inputBus.side = sideNum
             elseif invName == ME_INTERFACE_NAME or invName == ME_DUAL_INTERFACE_NAME then
@@ -164,9 +165,9 @@ for addr, v in pairs(transposers) do
     end
     -- Now that we have the sides of this transposer discovered, look for a configuration which matches one of the water plants
 
-    print("Dumping data of transposer ", addr)
-    print("fluids", TableToString(fluids))
-    print("solids", TableToString(solids))
+    -- print("Dumping data of transposer ", addr)
+    -- print("fluids", TableToString(fluids))
+    -- print("solids", TableToString(solids))
 
     -- T2
     if fluids.ozone.present and fluids.inputHatch.present then
