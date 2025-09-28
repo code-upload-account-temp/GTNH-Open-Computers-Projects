@@ -1,6 +1,5 @@
 require("Config");
 require("Constants");
-require("Utility")
 require("NetworkDiscovery") -- discovery logic is here
 
 CYCLE_MAX_TICKS = 20 * 120

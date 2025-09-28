@@ -13,5 +13,5 @@ I would have used dual interfaces for ALL fluid buffers instead of just some, bu
 Install:
 
 ```
-wget https://raw.githubusercontent.com/code-upload-account-temp/GTNH-Open-Computers-Projects/refs/heads/main/water/Setup.lua
+wget https://raw.githubusercontent.com/code-upload-account-temp/GTNH-Open-Computers-Projects/refs/heads/main/water/Setup.lua && Setup
 ```
