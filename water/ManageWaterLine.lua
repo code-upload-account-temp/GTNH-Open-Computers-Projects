@@ -221,6 +221,7 @@ for addr, v in pairs(transposers) do
 
     -- T4
     if fluids.hydrochloric.present and solids.sodiumHydroxide.present and solids.inputBus.present and fluids.inputHatch.present and solids.inputBus.side == fluids.inputHatch.side then
+        print("T4 discovered at ", addr)
         inputTransposers.t4 = {
             proxy=transposer,
             sodiumHydroxideSide=solids.sodiumHydroxide.side,
@@ -231,23 +232,28 @@ for addr, v in pairs(transposers) do
         }
     end
     
+    -- T5
     if fluids.heliumPlasma.present and fluids.superCoolant.present and fluids.inputHatch.present then
+        print("T5 discovered at ", addr)
         inputTransposers.t5={
             proxy=transposer,
             heliumPlasmaSide=fluids.heliumPlasma.side,
             heliumPlasmaTankNum=fluids.heliumPlasma.tank,
             superCoolantSide=fluids.superCoolant.side,
             superCoolantTankNum=fluids.superCoolant.tank,
-            inputSide=fluids.inputHatch.side,
+            inputSide=fluids.inputHatch.side
         }
     end
 
+    -- T6
+
     if solids.lenses.present and solids.inputBus.present then
+        print("T6 discovered at ", addr)
         inputTransposers.t6={
             proxy=transposer,
             lensesSide=solids.lenses.side,
             lensSlotMap={}, -- TODO: fill out lens types
-            inputSide=solids.inputBus.side,
+            inputSide=solids.inputBus.side
         }
     end
 end
