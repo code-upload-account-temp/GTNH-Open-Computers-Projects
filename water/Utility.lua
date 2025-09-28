@@ -1,3 +1,5 @@
+-- Source: https://stackoverflow.com/a/27028488
+
 function TableToString(o)
     if type(o) == 'table' then
        local s = '{ '
