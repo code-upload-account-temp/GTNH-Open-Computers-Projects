@@ -142,6 +142,7 @@ for addr, v in pairs(transposers) do
                 for slotNum=1,inventorySize do
                     local stack = transposer.getStackInSlot(sideNum, slotNum)
                     if stack ~= nil then
+                        local label = stack.label
                         if stack.label == "Activated Carbon Filter Mesh" then
                             solids.filters.present = true
                             solids.filters.side = sideNum
@@ -227,19 +228,19 @@ print("Network discovery complete!")
 
 -- Check sanity of controllers vs. transposers
 
-if plantControllers.t2 ~= nil and inputTransposers.t2 == nil then
+if plantControllers.t2 ~= nil and inputTransposers.t2.proxy == nil then
     error("T2 controller present but no transposer found!")
 end
-if plantControllers.t3 ~= nil and inputTransposers.t3 == nil then
+if plantControllers.t3 ~= nil and inputTransposers.t3.proxy == nil then
     error("T3 controller present but no transposer found!")
 end
-if plantControllers.t4 ~= nil and inputTransposers.t4 == nil then
+if plantControllers.t4 ~= nil and inputTransposers.t4.proxy == nil then
     error("T4 controller present but no transposer found!")
 end
-if plantControllers.t5 ~= nil and inputTransposers.t5 == nil then
+if plantControllers.t5 ~= nil and inputTransposers.t5.proxy == nil then
     error("T5 controller present but no transposer found!")
 end
-if plantControllers.t6 ~= nil and inputTransposers.t6 == nil then
+if plantControllers.t6 ~= nil and inputTransposers.t6.proxy == nil then
     error("T6 controller present but no transposer found!")
 end
 
