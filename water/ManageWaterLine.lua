@@ -1,6 +1,7 @@
 local component = require("component");
 require("Config");
 require("Constants");
+require("Utility")
 
 -- IMPORTANT: Read the readme, it documents assumptions and setup requirements
 
@@ -98,36 +99,36 @@ for addr, v in pairs(transposers) do
     }
     -- TODO: T7 and T8 solid inputs
 
-    -- Scan all sides of all transposers to identify where needed inputs are
+    -- Scan all sides of this transposers to identify where needed inputs are
     for sideNum=0,5 do
         local tankCount = transposer.getTankCount(sideNum)
-        for tankNum=1,tankCount do
-                local contents = transposer.getFluidInTank(sideNum, tankNum)
-            if contents.name == "ozone" then
-                fluids.ozone.present = true
-                fluids.ozone.side = sideNum
-                fluids.ozone.tank = tankNum
-            elseif contents.name == "polyaluminiumchloride" then
-                fluids.polyAlCl.present = true
-                fluids.polyAlCl.side = sideNum
-                fluids.polyAlCl.tank = tankNum
-            elseif contents.name == "hydrochloricacid_gt5u" then
-                fluids.hydrochloric.present = true
-                fluids.hydrochloric.side = sideNum
-                fluids.hydrochloric.tank = tankNum
-            elseif contents.name == "plasma.helium" then
-                fluids.heliumPlasma.present = true
-                fluids.heliumPlasma.side = sideNum
-                fluids.heliumPlasma.tank = tankNum
-            elseif contents.name == "supercoolant" then
-                fluids.superCoolant.present = true
-                fluids.superCoolant.side = sideNum
-                fluids.superCoolant.tank = tankNum
-            elseif tankCount == 6 or tankCount == 1 then
-                -- assume input hatch for now, we can error later if it's the wrong size
-                -- This will cause problems if unrelated tanks are placed next to the transposers!
-                fluids.inputHatch.present = true
-                fluids.inputHatch.side = sideNum
+        if tankCount == 4 or tankCount == 7 or (tankCount == 1 and (transposer.getTankCapacity(sideNum,1) == T2_INPUT_HATCH_SIZE or transposer.getTankCapacity(sideNum,1) == T3_INPUT_HATCH_SIZE)) then
+            fluids.inputHatch.present = true
+            fluids.inputHatch.side = sideNum
+        else
+            for tankNum=1,tankCount do
+                    local contents = transposer.getFluidInTank(sideNum, tankNum)
+                if contents.name == "ozone" then
+                    fluids.ozone.present = true
+                    fluids.ozone.side = sideNum
+                    fluids.ozone.tank = tankNum
+                elseif contents.name == "polyaluminiumchloride" then
+                    fluids.polyAlCl.present = true
+                    fluids.polyAlCl.side = sideNum
+                    fluids.polyAlCl.tank = tankNum
+                elseif contents.name == "hydrochloricacid_gt5u" then
+                    fluids.hydrochloric.present = true
+                    fluids.hydrochloric.side = sideNum
+                    fluids.hydrochloric.tank = tankNum
+                elseif contents.name == "plasma.helium" then
+                    fluids.heliumPlasma.present = true
+                    fluids.heliumPlasma.side = sideNum
+                    fluids.heliumPlasma.tank = tankNum
+                elseif contents.name == "supercoolant" then
+                    fluids.superCoolant.present = true
+                    fluids.superCoolant.side = sideNum
+                    fluids.superCoolant.tank = tankNum
+                end
             end
         end
         local inventorySize = transposer.getInventorySize(sideNum)
@@ -161,7 +162,11 @@ for addr, v in pairs(transposers) do
             end
         end
     end
-    -- Now that we have the network discovered, look for a configuration which matches one of the water plants
+    -- Now that we have the sides of this transposer discovered, look for a configuration which matches one of the water plants
+
+    print("Dumping data of transposer ", addr)
+    print("fluids", TableToString(fluids))
+    print("solids", TableToString(solids))
 
     -- T2
     if fluids.ozone.present and fluids.inputHatch.present then
