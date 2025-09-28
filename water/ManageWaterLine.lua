@@ -34,14 +34,16 @@ local T2_INPUT_HATCH_SIZE = 1024000
 local T2_BUFFER_TANK_SIZE = 4000000
 local T3_INPUT_HATCH_SIZE = 1024000
 local T3_BUFFER_TANK_SIZE = 4000000
-local T4_INPUT_HATCH_SIZE = 8000
-local T3_BUFFER_TANK_SIZE = 32000
-local T5_INPUT_HATCH_SIZE = 8000
-local T5_BUFFER_TANK_SIZE = 32000
 
 -- End Config
 
 -- System Discovery
+
+local ae2 = component.me_controller
+
+if ae2 == nil then
+    error("No AE2 controller detected, this code cannot run without AE2 integration!")
+end
 
 local plantControllers = {t0=nil,t1=nil,t2=nil,t3=nil,t4=nil,t5=nil,t6=nil,t7=nil,t8=nil}
 local inputTransposers = {
@@ -59,7 +61,25 @@ local inputTransposers = {
     },
     t4={
         proxy=nil,
-
+        sodiumHydroxideSide=nil,
+        sodiumHydroxideSlot=nil,
+        hydrochloricSide=nil,
+        hydrochloricTankNum=nil,
+        inputSide=nil,
+    },
+    t5={
+        proxy=nil,
+        heliumPlasmaSide=nil,
+        heliumPlasmaTankNum=nil,
+        superCoolantSide=nil,
+        superCoolantTankNum=nil,
+        inputSide=nil,
+    },
+    t6={
+        proxy=nil,
+        lensesSide=nil,
+        lensSlotMap={}, -- TODO: fill out lens types
+        inputSide=nil,
     }
 }
 
@@ -91,6 +111,8 @@ for addr, v in pairs(machines) do
     end
 end
 
+print("Beginning network discovery...")
+
 for addr, v in pairs(transposers) do
     -- Get relevant transposer to run queries on
     local transposer = component.proxy(addr, "transposer")
@@ -100,6 +122,7 @@ for addr, v in pairs(transposers) do
         polyAlCl={present=false,side=nil,tank=nil},
         hydrochloric={present=false,side=nil,tank=nil},
         heliumPlasma={present=false,side=nil,tank=nil},
+        superCoolant={present=false,side=nil,tank=nil},
         inputHatch={present=false,side=nil}
     }
     -- TODO: T7 and T8 fluid registry
@@ -111,9 +134,9 @@ for addr, v in pairs(transposers) do
     -- TODO: T7 and T8 solid inputs
 
     -- Scan all sides of all transposers to identify where needed inputs are
-    for sideNum in 0, 5 do
+    for sideNum=0,5 do
         local tankCount = transposer.getTankCount(sideNum)
-        for tankNum in 1,tankCount do
+        for tankNum=1,tankCount do
                 local contents = transposer.getFluidInTank(sideNum, tankNum)
             if contents.name == "ozone" then
                 fluids.ozone.present = true
@@ -131,7 +154,11 @@ for addr, v in pairs(transposers) do
                 fluids.heliumPlasma.present = true
                 fluids.heliumPlasma.side = sideNum
                 fluids.heliumPlasma.tank = tankNum
-            elseif tankCount == 6 | tankCount == 1 then
+            elseif contents.name == "supercoolant" then
+                fluids.superCoolant.present = true
+                fluids.superCoolant.side = sideNum
+                fluids.superCoolant.tank = tankNum
+            elseif tankCount == 6 or tankCount == 1 then
                 -- assume input hatch for now, we can error later if it's the wrong size
                 -- This will cause problems if unrelated tanks are placed next to the transposers!
                 fluids.inputHatch.present = true
@@ -139,28 +166,30 @@ for addr, v in pairs(transposers) do
             end
         end
         local inventorySize = transposer.getInventorySize(sideNum)
-        if inventorySize ~= nil & inventorySize > 0 then
+        if inventorySize ~= nil and inventorySize > 0 then
             local invName = transposer.getInventoryName(sideNum)
             -- Ignore all inventories that are not ingredient buffers or interfaces or dual interfaces
             if invName == ME_INGREDIENT_BUFFER_NAME then
                 -- ingredient buffer is always an output
                 solids.inputBus.present = true
                 solids.inputBus.side = sideNum
-            elseif invName == ME_INTERFACE_NAME | invName == ME_DUAL_INTERFACE_NAME then
-                for slotNum in 1,inventorySize do
+            elseif invName == ME_INTERFACE_NAME or invName == ME_DUAL_INTERFACE_NAME then
+                for slotNum=1,inventorySize do
                     local stack = transposer.getStackInSlot(sideNum, slotNum)
-                    if stack.label == "Activated Carbon Filter Mesh" then
-                        solids.filters.present = true
-                        solids.filters.side = sideNum
-                        solids.filters.slot = slotNum
-                    elseif stack.label == "Sodium Hydroxide Dust" then
-                        solids.sodiumHydroxide.present = true
-                        solids.sodiumHydroxide.side = sideNum
-                        solids.sodiumHydroxide.slot = slotNum
-                    elseif stack.label == "Orundum Lens" then -- TODO: the rest of the lenses
-                        solids.lenses.present = true
-                        solids.lenses.side = sideNum
-                        solids.lenses.slot = slotNum
+                    if stack ~= nil then
+                        if stack.label == "Activated Carbon Filter Mesh" then
+                            solids.filters.present = true
+                            solids.filters.side = sideNum
+                            solids.filters.slot = slotNum
+                        elseif stack.label == "Sodium Hydroxide Dust" then
+                            solids.sodiumHydroxide.present = true
+                            solids.sodiumHydroxide.side = sideNum
+                            solids.sodiumHydroxide.slot = slotNum
+                        elseif stack.label == "Orundum Lens" then -- TODO: the rest of the lenses
+                            solids.lenses.present = true
+                            solids.lenses.side = sideNum
+                            solids.lenses.slot = slotNum
+                        end
                     end
                 end
             end
@@ -169,14 +198,61 @@ for addr, v in pairs(transposers) do
     -- Now that we have the network discovered, look for a configuration which matches one of the water plants
 
     -- T2
-    if fluids.ozone.present & fluids.inputHatch.present then
-        inputTransposers.t2.proxy = transposer
-        inputTransposers.t2.inputSide = fluids.inputHatch.side
-        inputTransposers.t2.ozoneSide = fluids.ozone.side
-        inputTransposers.t2.ozoneTankNum = fluids.ozone.tank
+    if fluids.ozone.present and fluids.inputHatch.present then
+        print("T2 discovered at ", addr)
+        inputTransposers.t2 = {
+            proxy=transposer,
+            ozoneSide=fluids.ozone.side,
+            ozoneTankNum=fluids.ozone.tank,
+            inputSide=fluids.inputHatch.side
+        }
+    end
+
+    -- T3
+    if fluids.ozone.present and fluids.inputHatch.present then
+        print("T3 discovered at ", addr)
+        inputTransposers.t3 = {
+            proxy=transposer,
+            polyAlClSide=fluids.polyAlCl.side,
+            polyAlClTankNum=fluids.polyAlCl.tank,
+            inputSide=fluids.inputHatch.side
+        }
+    end
+
+    -- T4
+    if fluids.hydrochloric.present and solids.sodiumHydroxide.present and solids.inputBus.present and fluids.inputHatch.present and solids.inputBus.side == fluids.inputHatch.side then
+        inputTransposers.t4 = {
+            proxy=transposer,
+            sodiumHydroxideSide=solids.sodiumHydroxide.side,
+            sodiumHydroxideSlot=solids.sodiumHydroxide.slot,
+            hydrochloricSide=fluids.hydrochloric.side,
+            hydrochloricTankNum=fluids.hydrochloric.tank,
+            inputSide=solids.inputBus.side,
+        }
     end
     
+    if fluids.heliumPlasma.present and fluids.superCoolant.present and fluids.inputHatch.present then
+        inputTransposers.t5={
+            proxy=transposer,
+            heliumPlasmaSide=fluids.heliumPlasma.side,
+            heliumPlasmaTankNum=fluids.heliumPlasma.tank,
+            superCoolantSide=fluids.superCoolant.side,
+            superCoolantTankNum=fluids.superCoolant.tank,
+            inputSide=fluids.inputHatch.side,
+        }
+    end
+
+    if solids.lenses.present and solids.inputBus.present then
+        inputTransposers.t6={
+            proxy=transposer,
+            lensesSide=solids.lenses.side,
+            lensSlotMap={}, -- TODO: fill out lens types
+            inputSide=solids.inputBus.side,
+        }
+    end
 end
+
+print("Network discovery complete!")
 
 -- End System Discovery
 
