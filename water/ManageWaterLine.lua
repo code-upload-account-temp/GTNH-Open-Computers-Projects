@@ -1,6 +1,8 @@
 require("Config");
 require("Constants");
 require("NetworkDiscovery") -- discovery logic is here
+require("os")
+
 
 CYCLE_MAX_TICKS = 20 * 120
 
@@ -32,7 +34,7 @@ if (PlantControllers.t8 ~= nil) then
     PlantControllers.t8.setWorkAllowed(false)
 end
 
-local function getRemainingSecondsInCycle()
+function GetRemainingSecondsInCycle()
     local currentTicks = PlantControllers.t0.getWorkProgress()
     local remainingTicks = CYCLE_MAX_TICKS - currentTicks
     return remainingTicks/20
@@ -89,4 +91,57 @@ function GetFluidLevels()
             levels.supercoolant = fluid.amount
         end
     end
+    return levels
+end
+
+-- Recursively increases the amount needed of earlier water levels based on higher tier demands, so we batch correctly
+local function calculateMissingSingleTier(nextTierNeeded, level, target, minBatch, successChance) 
+    local missing = 0
+    if nextTierNeeded > level then
+        if level >= target then
+            missing = nextTierNeeded + target - level
+        else 
+            missing = nextTierNeeded - level
+        end
+    end
+    if level < target then
+        missing = missing + target - level
+        if (missing < minBatch) then
+            missing = minBatch
+        end
+    end
+    if (missing < minBatch) then
+        missing = minBatch
+    end
+    local inputNeeded = missing / (0.9 * successChance)
+    return missing, inputNeeded
+end
+
+local function calculateMissing()
+    local levels = GetFluidLevels()
+    local t8Missing, t7Needed = calculateMissingSingleTier(0,        levels.t8, T8_MAINTAIN, T8_MIN_BATCH, SUCCESS_CHANCE_GUESS_T8)
+    local t7Missing, t6Needed = calculateMissingSingleTier(t7Needed, levels.t7, T7_MAINTAIN, T7_MIN_BATCH, SUCCESS_CHANCE_GUESS_T7)
+    local t6Missing, t5Needed = calculateMissingSingleTier(t6Needed, levels.t6, T6_MAINTAIN, T6_MIN_BATCH, SUCCESS_CHANCE_GUESS_T6)
+    local t5Missing, t4Needed = calculateMissingSingleTier(t5Needed, levels.t5, T5_MAINTAIN, T5_MIN_BATCH, SUCCESS_CHANCE_GUESS_T5)
+    local t4Missing, t3Needed = calculateMissingSingleTier(t4Needed, levels.t4, T4_MAINTAIN, T4_MIN_BATCH, SUCCESS_CHANCE_GUESS_T4)
+    local t3Missing, t2Needed = calculateMissingSingleTier(t3Needed, levels.t3, T3_MAINTAIN, T3_MIN_BATCH, SUCCESS_CHANCE_GUESS_T3)
+    local t2Missing, t1Needed = calculateMissingSingleTier(t2Needed, levels.t2, T2_MAINTAIN, T2_MIN_BATCH, SUCCESS_CHANCE_GUESS_T2)
+    local t1Missing, _ =        calculateMissingSingleTier(t1Needed, levels.t1, T1_MAINTAIN, 0,            SUCCESS_CHANCE_GUESS_T1)
+    local missing = {
+        t1=t1Missing,
+        t2=t2Missing,
+        t3=t3Missing,
+        t4=t4Missing,
+        t5=t5Missing,
+        t6=t6Missing,
+        t7=t7Missing,
+        t8=t8Missing,
+    }
+    return missing
+end
+
+while true do
+    local missing = calculateMissing()
+
+    os.sleep(10) -- TODO: proper cycle logic, this is just preventing unbreakable loop for now
 end
