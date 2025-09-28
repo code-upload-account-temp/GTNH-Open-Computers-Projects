@@ -1,7 +1,7 @@
 MULTI_T0_NAME = "multimachine.purificationplant"
 MULTI_T1_NAME = "multimachine.purificationunitclarifier"
 MULTI_T2_NAME = "multimachine.purificationunitozonation"
-MULTI_T3_NAME = "multimachine.purificationunitflocculation"
+MULTI_T3_NAME = "multimachine.purificationunitflocculator"
 MULTI_T4_NAME = "multimachine.purificationunitphadjustment"
 MULTI_T5_NAME = "multimachine.purificationunitplasmaheater"
 MULTI_T6_NAME = "multimachine.purificationunituvtreatment"
