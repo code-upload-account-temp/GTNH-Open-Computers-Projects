@@ -9,4 +9,9 @@ IMPORTANT ASSUMPTIONS
 6. All fluids other than transposer buffers (transposer buffers should be exported, not storage bused) stored in AE network with Adapter + MFU controller connection
 
 I would have used dual interfaces for ALL fluid buffers instead of just some, but that would have severely limited throughput on ozone
-System Discovery
+
+Install:
+
+```
+wget https://raw.githubusercontent.com/code-upload-account-temp/GTNH-Open-Computers-Projects/refs/heads/main/water/Setup.lua
+```

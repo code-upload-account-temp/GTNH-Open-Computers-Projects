@@ -40,7 +40,9 @@ InputTransposers = {
         lensesSide = nil,
         lensSlotMap = {}, -- TODO: fill out lens types
         inputSide = nil,
-    }
+    },
+    t7 = {proxy = nil},
+    t8 = {proxy = nil}
 }
 
 local machines = component.list("gt_machine")
@@ -247,4 +249,12 @@ end
 if (PlantControllers.t6 == nil) ~= (InputTransposers.t6.proxy == nil) then
     error(string.format("T6 controller/transposer mismatch! %s/%s", PlantControllers.t6 == nil,
         InputTransposers.t6.proxy == nil))
+end
+if (PlantControllers.t7 == nil) ~= (InputTransposers.t7.proxy == nil) then
+    error(string.format("T7 controller/transposer mismatch! %s/%s", PlantControllers.t7 == nil,
+        InputTransposers.t7.proxy == nil))
+end
+if (PlantControllers.t8 == nil) ~= (InputTransposers.t8.proxy == nil) then
+    error(string.format("T8 controller/transposer mismatch! %s/%s", PlantControllers.t8 == nil,
+        InputTransposers.t8.proxy == nil))
 end
