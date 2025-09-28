@@ -1,8 +1,8 @@
+require("os")
 require("Config");
 require("Constants");
-require("NetworkDiscovery") -- discovery logic is here
-require("os")
-
+require("NetworkDiscovery"); -- discovery logic is here
+require("TierControllers");
 
 CYCLE_MAX_TICKS = 20 * 120
 
@@ -142,6 +142,8 @@ end
 
 while true do
     local missing = calculateMissing()
-
-    os.sleep(10) -- TODO: proper cycle logic, this is just preventing unbreakable loop for now
+    if missing.t1 > 0 then
+        PlantControllers.t1.setWorkAllowed(true)
+    end
+    os.sleep(120) -- TODO: proper cycle logic, this is just preventing unbreakable loop for now
 end

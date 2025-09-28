@@ -7,6 +7,15 @@ local scripts = {
     "Constants.lua",
     "ManageWaterLine.lua",
     "NetworkDiscovery.lua",
+    "TierControllers.lua",
+    "T1.lua",
+    "T2.lua",
+    "T3.lua",
+    "T4.lua",
+    "T5.lua",
+    "T6.lua",
+    "T7.lua",
+    "T8.lua",
     ".shrc"
 }
 
