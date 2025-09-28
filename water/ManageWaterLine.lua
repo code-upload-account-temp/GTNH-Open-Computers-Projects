@@ -1,4 +1,6 @@
 local component = require("component");
+require("Config");
+require("Constants");
 
 -- IMPORTANT ASSUMPTIONS
 
@@ -10,32 +12,6 @@ local component = require("component");
 -- 6. All fluids other than transposer buffers (transposer buffers should be exported, not storage bused) stored in AE network with Adapter + MFU controller connection
 
 -- I would have used dual interfaces for ALL fluid buffers instead of just some, but that would have severely limited throughput on ozone
-
--- Definitions - TODO: Move into an import once this is stable
-
-local MULTI_T0_NAME = "multimachine.purificationplant"
-local MULTI_T1_NAME = "multimachine.purificationunitclarifier"
-local MULTI_T2_NAME = "multimachine.purificationunitozonation"
-local MULTI_T3_NAME = "multimachine.purificationunitflocculation"
-local MULTI_T4_NAME = "multimachine.purificationunitphadjustment"
-local MULTI_T5_NAME = "multimachine.purificationunitplasmaheater"
-local MULTI_T6_NAME = "multimachine.purificationunituvtreatment"
-local MULTI_T7_NAME = "multimachine.purificationunitdegasifier"
-local MULTI_T8_NAME = "multimachine.purificationunitextractor"
-local ME_INTERFACE_NAME = "tile.appliedenergistics2.BlockInterface"
-local ME_DUAL_INTERFACE_NAME = "tile.fluid_interface"
-local ME_INGREDIENT_BUFFER_NAME = "tile.ingredient_buffer"
-
--- End Definitions
-
--- Config
-
-local T2_INPUT_HATCH_SIZE = 1024000
-local T2_BUFFER_TANK_SIZE = 4000000
-local T3_INPUT_HATCH_SIZE = 1024000
-local T3_BUFFER_TANK_SIZE = 4000000
-
--- End Config
 
 -- System Discovery
 
@@ -209,7 +185,7 @@ for addr, v in pairs(transposers) do
     end
 
     -- T3
-    if fluids.ozone.present and fluids.inputHatch.present then
+    if fluids.polyAlCl.present and fluids.inputHatch.present then
         print("T3 discovered at ", addr)
         inputTransposers.t3 = {
             proxy=transposer,
@@ -259,6 +235,24 @@ for addr, v in pairs(transposers) do
 end
 
 print("Network discovery complete!")
+
+-- Check sanity of controllers vs. transposers
+
+if plantControllers.t2 ~= nil and inputTransposers.t2 == nil then
+    error("T2 controller present but no transposer found!")
+end
+if plantControllers.t3 ~= nil and inputTransposers.t3 == nil then
+    error("T3 controller present but no transposer found!")
+end
+if plantControllers.t4 ~= nil and inputTransposers.t4 == nil then
+    error("T4 controller present but no transposer found!")
+end
+if plantControllers.t5 ~= nil and inputTransposers.t5 == nil then
+    error("T5 controller present but no transposer found!")
+end
+if plantControllers.t6 ~= nil and inputTransposers.t6 == nil then
+    error("T6 controller present but no transposer found!")
+end
 
 -- End System Discovery
 
