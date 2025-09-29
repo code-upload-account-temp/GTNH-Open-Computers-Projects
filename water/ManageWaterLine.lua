@@ -157,35 +157,44 @@ while true do
     local missing = calculateMissing()
     if missing.t1 > 0 then
         print(string.format("Running T1 to generate %gL", missing.t1))
-        RunT1(levels.t1 + missing.t1)
-    end
-    if missing.t2 > 0 then
+        if not RunT1(levels.t1 + missing.t1) then
+            print("Failed to generate full amount of T1")
+        end
+    elseif missing.t2 > 0 then
         print(string.format("Running T2 to generate %gL", missing.t2))
-        RunT2(levels.t2 + missing.t2)
-    end
-    if missing.t3 > 0 then
+        if not RunT2(levels.t2 + missing.t2) then
+            print("Failed to generate full amount of T2")
+        end
+    elseif missing.t3 > 0 then
         print(string.format("Running T3 to generate %gL", missing.t3))
-        RunT3(levels.t3 + missing.t3)
-    end
-    if missing.t4 > 0 then
+        if not RunT3(levels.t3 + missing.t3) then
+            print("Failed to generate full amount of T3")
+        end
+    elseif missing.t4 > 0 then
         print(string.format("Running T4 to generate %gL", missing.t4))
-        RunT4(levels.t4 + missing.t4)
-    end
-    if missing.t5 > 0 then
+        if not RunT4(levels.t4 + missing.t4) then
+            print("Failed to generate full amount of T4")
+        end
+    elseif missing.t5 > 0 then
         print(string.format("Running T5 to generate %gL", missing.t5))
-        RunT5(levels.t5 + missing.t5)
-    end
-    if missing.t6 > 0 then
+        if not RunT5(levels.t5 + missing.t5) then
+            print("Failed to generate full amount of T5")
+        end
+    elseif missing.t6 > 0 then
         print(string.format("Running T6 to generate %gL", missing.t6))
-        RunT6(levels.t6 + missing.t6)
-    end
-    if missing.t7 > 0 then
+        if not RunT6(levels.t6 + missing.t6) then
+            print("Failed to generate full amount of T6")
+        end
+    elseif missing.t7 > 0 then
         print(string.format("Running T7 to generate %gL", missing.t7))
-        RunT7(levels.t7 + missing.t7)
-    end
-    if missing.t8 > 0 then
+        if not RunT7(levels.t7 + missing.t7) then
+            print("Failed to generate full amount of T7")
+        end
+    elseif missing.t8 > 0 then
         print(string.format("Running T8 to generate %gL", missing.t8))
-        RunT8(levels.t8 + missing.t8)
+        if not RunT8(levels.t8 + missing.t8) then
+            print("Failed to generate full amount of T8")
+        end
     end
-    os.sleep(120) -- TODO: proper cycle logic, this is just preventing unbreakable loop for now
+    os.sleep(10) -- TODO: proper cycle logic, this is just preventing unbreakable loop for now
 end
