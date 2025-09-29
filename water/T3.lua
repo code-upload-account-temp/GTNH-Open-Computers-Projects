@@ -9,7 +9,7 @@ function RunT3(targetLevel)
         hatchFillTarget = hatchFillTarget + 100000
     end
     while levels.t3 < targetLevel and levels.polyAlCl >= hatchFillTarget do
-        if !PlantControllers.t3.isWorkAllowed() then
+        if not PlantControllers.t3.isWorkAllowed() then
             PlantControllers.t3.setWorkAllowed(true)
         end
         WaitForNextCycle(bufferTimeSeconds)
@@ -20,7 +20,7 @@ function RunT3(targetLevel)
         end
 
         local success = transposer.proxy.transferFluid(transposer.polyAlClSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.polyAlClTankNum)
-        if !success then
+        if not success then
             print("Failed to transfer poly aluminium chloride! Please check your setup!")
             PlantControllers.t3.setWorkAllowed(false)
             return false

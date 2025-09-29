@@ -104,7 +104,7 @@ end
 
 -- Recursively increases the amount needed of earlier water levels based on higher tier demands, so we batch correctly
 local function calculateMissingSingleTier(tierExists, nextTierNeeded, level, target, minBatch, successChance) 
-    if !tierExists then
+    if not tierExists then
         -- We don't have this tier installed, ignore config and demand nothing
         return 0, 0
     end
