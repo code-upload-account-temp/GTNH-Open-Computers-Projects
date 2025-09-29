@@ -5,7 +5,7 @@ function RunT2(targetLevel)
     local transposer = InputTransposers.t2
     local hatchFillTarget = math.min(T2_INPUT_HATCH_SIZE,1024000)
     while levels.t2 < targetLevel and levels.ozone >= hatchFillTarget do
-        if ~PlantControllers.t2.isWorkAllowed() then
+        if !PlantControllers.t2.isWorkAllowed() then
             PlantControllers.t2.setWorkAllowed(true)
         end
         WaitForNextCycle(bufferTimeSeconds)
@@ -16,7 +16,7 @@ function RunT2(targetLevel)
         end
 
         local success = transposer.proxy.transferFluid(transposer.ozoneSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.ozoneTankNum)
-        if ~success then
+        if !success then
             print("Failed to transfer ozone! Please check your setup!")
             PlantControllers.t2.setWorkAllowed(false)
             return false
