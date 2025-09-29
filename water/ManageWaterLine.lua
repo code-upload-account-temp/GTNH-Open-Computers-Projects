@@ -156,35 +156,35 @@ while true do
     local levels = GetFluidLevels()
     local missing = calculateMissing()
     if missing.t1 > 0 then
-        print(string.format("Running T1 to generate %iL", missing.t1))
+        print(string.format("Running T1 to generate %gL", missing.t1))
         RunT1(levels.t1 + missing.t1)
     end
     if missing.t2 > 0 then
-        print(string.format("Running T2 to generate %iL", missing.t2))
+        print(string.format("Running T2 to generate %gL", missing.t2))
         RunT2(levels.t2 + missing.t2)
     end
     if missing.t3 > 0 then
-        print(string.format("Running T3 to generate %iL", missing.t3))
+        print(string.format("Running T3 to generate %gL", missing.t3))
         RunT3(levels.t3 + missing.t3)
     end
     if missing.t4 > 0 then
-        print(string.format("Running T4 to generate %iL", missing.t4))
+        print(string.format("Running T4 to generate %gL", missing.t4))
         RunT4(levels.t4 + missing.t4)
     end
     if missing.t5 > 0 then
-        print(string.format("Running T5 to generate %iL", missing.t5))
+        print(string.format("Running T5 to generate %gL", missing.t5))
         RunT5(levels.t5 + missing.t5)
     end
     if missing.t6 > 0 then
-        print(string.format("Running T6 to generate %iL", missing.t6))
+        print(string.format("Running T6 to generate %gL", missing.t6))
         RunT6(levels.t6 + missing.t6)
     end
     if missing.t7 > 0 then
-        print(string.format("Running T7 to generate %iL", missing.t7))
+        print(string.format("Running T7 to generate %gL", missing.t7))
         RunT7(levels.t7 + missing.t7)
     end
     if missing.t8 > 0 then
-        print(string.format("Running T8 to generate %iL", missing.t8))
+        print(string.format("Running T8 to generate %gL", missing.t8))
         RunT8(levels.t8 + missing.t8)
     end
     os.sleep(120) -- TODO: proper cycle logic, this is just preventing unbreakable loop for now

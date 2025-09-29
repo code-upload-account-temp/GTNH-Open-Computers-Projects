@@ -15,7 +15,7 @@ function RunT3(targetLevel)
         WaitForNextCycle(bufferTimeSeconds)
         local fluidInInput = transposer.proxy.getFluidInTank(transposer.inputSide)
         local inputLevel = 0
-        if fluidInInput ~= nil then
+        if fluidInInput ~= nil and fluidInInput.amount ~= nil then
             inputLevel = fluidInInput.amount
         end
 
