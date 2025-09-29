@@ -40,6 +40,14 @@ function GetRemainingSecondsInCycle()
     return remainingTicks/20
 end
 
+function WaitForNextCycle(bufferTimeSeconds)
+    -- sends us to bufferTime before the start of the next cycle, enough time to pre-buffer inputs with some room for error on the OS level
+    local startWait = GetRemainingSecondsInCycle()
+    if startWait > bufferTimeSeconds then
+        os.sleep(startWait-bufferTimeSeconds)
+    end
+end
+
 function GetFluidLevels()
     local levels = {
         t1=0,t2=0,t3=0,t4=0,t5=0,t6=0,t7=0,t8=0,

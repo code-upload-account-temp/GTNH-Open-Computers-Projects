@@ -10,4 +10,5 @@ function RunT1(targetLevel)
         levels = GetFluidLevels()
     end
     PlantControllers.t1.setWorkAllowed(false)
+    return levels.t1 >= targetLevel
 end

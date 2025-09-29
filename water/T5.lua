@@ -7,4 +7,5 @@ function RunT5(targetLevel)
         os.sleep(120)
     end
     PlantControllers.t5.setWorkAllowed(false)
+    return levels.t5 >= targetLevel
 end
