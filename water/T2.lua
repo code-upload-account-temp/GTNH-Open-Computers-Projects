@@ -17,12 +17,14 @@ function RunT2(targetLevel)
             inputLevel = fluidInInput.amount
         end
 
-        if ~transposer.proxy.transferFluid(transposer.ozoneSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.ozoneTankNum) then
+        local success = transposer.proxy.transferFluid(transposer.ozoneSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.ozoneTankNum)
+        if ~success then
             print("Failed to transfer ozone! Please check your setup!")
             PlantControllers.t2.setWorkAllowed(false)
             return false
         end
-        os.sleep(120)
+        -- skip to new cycle before restarting logic
+        os.sleep(bufferTimeSeconds * 2)
     end
     PlantControllers.t2.setWorkAllowed(false)
     return levels.t2 >= targetLevel
