@@ -1,10 +1,32 @@
+local bufferTimeSeconds = 2
+local 
+
 function RunT3(targetLevel)
     local levels = GetFluidLevels()
-    while levels.t3 < targetLevel do
+    local transposer = InputTransposers.t3
+    local hatchFillTarget = 0
+    while hatchFillTarget < 900000 and hatchFillTarget + 100000 < T3_INPUT_HATCH_SIZE do
+        hatchFillTarget = hatchFillTarget + 100000
+    end
+    while levels.t3 < targetLevel and levels.polyAlCl >= hatchFillTarget do
         if ~PlantControllers.t3.isWorkAllowed() then
             PlantControllers.t3.setWorkAllowed(true)
         end
-        os.sleep(120)
+        WaitForNextCycle(bufferTimeSeconds)
+        local fluidInInput = transposer.proxy.getFluidInTank(transposer.inputSide)
+        local inputLevel = 0
+        if fluidInInput ~= nil then
+            inputLevel = fluidInInput.amount
+        end
+
+        local success = transposer.proxy.transferFluid(transposer.polyAlClSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.polyAlClTankNum)
+        if ~success then
+            print("Failed to transfer poly aluminium chloride! Please check your setup!")
+            PlantControllers.t3.setWorkAllowed(false)
+            return false
+        end
+        -- skip to new cycle before restarting logic
+        os.sleep(bufferTimeSeconds * 2)
     end
     PlantControllers.t3.setWorkAllowed(false)
     return levels.t3 >= targetLevel
