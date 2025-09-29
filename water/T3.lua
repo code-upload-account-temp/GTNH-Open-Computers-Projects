@@ -8,7 +8,7 @@ function RunT3(targetLevel)
     while hatchFillTarget < 900000 and hatchFillTarget + 100000 < T3_INPUT_HATCH_SIZE do
         hatchFillTarget = hatchFillTarget + 100000
     end
-    while levels.t3 < targetLevel and levels.polyAlCl >= hatchFillTarget do
+    while levels.t3 < targetLevel and levels.polyAlCl >= hatchFillTarget and levels.t2 >= (T3_MIN_BATCH/0.9) do
         if not PlantControllers.t3.isWorkAllowed() then
             PlantControllers.t3.setWorkAllowed(true)
         end
@@ -27,6 +27,7 @@ function RunT3(targetLevel)
         end
         -- skip to new cycle before restarting logic
         os.sleep(bufferTimeSeconds * 2)
+        levels = GetFluidLevels()
     end
     PlantControllers.t3.setWorkAllowed(false)
     return levels.t3 >= targetLevel

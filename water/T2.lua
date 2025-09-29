@@ -4,7 +4,7 @@ function RunT2(targetLevel)
     local levels = GetFluidLevels()
     local transposer = InputTransposers.t2
     local hatchFillTarget = math.min(T2_INPUT_HATCH_SIZE,1024000)
-    while levels.t2 < targetLevel and levels.ozone >= hatchFillTarget do
+    while levels.t2 < targetLevel and levels.ozone >= hatchFillTarget and levels.t1 >= (T2_MIN_BATCH/0.9) do
         if not PlantControllers.t2.isWorkAllowed() then
             PlantControllers.t2.setWorkAllowed(true)
         end
@@ -23,6 +23,7 @@ function RunT2(targetLevel)
         end
         -- skip to new cycle before restarting logic
         os.sleep(bufferTimeSeconds * 2)
+        levels = GetFluidLevels()
     end
     PlantControllers.t2.setWorkAllowed(false)
     return levels.t2 >= targetLevel
