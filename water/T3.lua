@@ -1,3 +1,10 @@
-function RunT3()
-
+function RunT3(targetLevel)
+    local levels = GetFluidLevels()
+    while levels.t3 < targetLevel do
+        if ~PlantControllers.t3.isWorkAllowed() then
+            PlantControllers.t3.setWorkAllowed(true)
+        end
+        os.sleep(120)
+    end
+    PlantControllers.t3.setWorkAllowed(false)
 end
