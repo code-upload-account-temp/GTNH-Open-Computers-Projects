@@ -243,16 +243,18 @@ if (PlantControllers.t3 == nil) ~= (InputTransposers.t3.proxy == nil) then
         InputTransposers.t3.proxy == nil))
 end
 if (PlantControllers.t4 == nil) ~= (InputTransposers.t4.proxy == nil) or (PlantControllers.t4 == nil) ~= (RedstoneIOs.pH == nil) then
-    error(string.format("T4 controller/transposer mismatch! %s/%s", PlantControllers.t4 == nil,
-        InputTransposers.t4.proxy == nil))
+    error(string.format("T4 controller/transposer/redstone mismatch! %s/%s/%s", PlantControllers.t4 == nil,
+        InputTransposers.t4.proxy == nil,
+        RedstoneIOs.pH == nil))
 end
 if (PlantControllers.t5 == nil) ~= (InputTransposers.t5.proxy == nil) then
     error(string.format("T5 controller/transposer mismatch! %s/%s", PlantControllers.t5 == nil,
         InputTransposers.t5.proxy == nil))
 end
 if (PlantControllers.t6 == nil) ~= (InputTransposers.t6.proxy == nil) or (PlantControllers.t6 == nil) ~= (RedstoneIOs.lens == nil) then
-    error(string.format("T6 controller/transposer mismatch! %s/%s", PlantControllers.t6 == nil,
-        InputTransposers.t6.proxy == nil))
+    error(string.format("T6 controller/transposer/redstone mismatch! %s/%s/%s", PlantControllers.t6 == nil,
+        InputTransposers.t6.proxy == nil,
+        RedstoneIOs.lens == nil))
 end
 if (PlantControllers.t7 == nil) ~= (InputTransposers.t7.proxy == nil) then
     error(string.format("T7 controller/transposer mismatch! %s/%s", PlantControllers.t7 == nil,
