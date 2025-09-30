@@ -36,13 +36,15 @@ function RunT4(targetLevel)
                 local pH = getpH()
                 if pH > 6.95 and pH < 7.05 then
                     -- Perfect, we're done
+                    print("pH balanced at ", pH)
                     if phBalanced then
                         phConfirmed = true
                     end
                     phBalanced = true
                 elseif pH >= 7.05 then
                     -- Need to add hydrochloric, 10L per 0.01
-                    local difference = (pH - 7.04)/0.01
+                    print("Adding HCl at ", pH)
+                    local difference = (pH - 7)/0.01
                     local hcl = difference * 10
                     local success = transposer.proxy.transferFluid(transposer.hydrochloricSide, transposer.inputSide, hcl, transposer.hydrochloricTankNum-1)
                     if not success then
@@ -52,7 +54,8 @@ function RunT4(targetLevel)
                     end
                 else
                     -- Need to add sodium hydroxide, 1 per 0.01
-                    local difference = (6.96 - pH)/0.01
+                    print("Adding NaOH at ", pH)
+                    local difference = (7 - pH)/0.01
                     local NaOH = difference
                     if NaOH > 64 then
                         NaOH = 64 -- we only move a stack at a time at most, maximum 4 iterations to move the biggest distance upwards
