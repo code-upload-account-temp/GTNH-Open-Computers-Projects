@@ -19,11 +19,13 @@ function RunT3(targetLevel)
             inputLevel = fluidInInput.amount
         end
 
-        local success = transposer.proxy.transferFluid(transposer.polyAlClSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.polyAlClTankNum)
-        if not success then
-            print("Failed to transfer poly aluminium chloride! Please check your setup!")
-            PlantControllers.t3.setWorkAllowed(false)
-            return false
+        if inputLevel ~= hatchFillTarget then
+            local success = transposer.proxy.transferFluid(transposer.polyAlClSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.polyAlClTankNum)
+            if not success then
+                print("Failed to transfer poly aluminium chloride! Please check your setup!")
+                PlantControllers.t3.setWorkAllowed(false)
+                return false
+            end
         end
         -- skip to new cycle before restarting logic
         os.sleep(bufferTimeSeconds * 2)

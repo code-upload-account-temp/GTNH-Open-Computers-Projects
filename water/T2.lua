@@ -14,13 +14,15 @@ function RunT2(targetLevel)
         if fluidInInput ~= nil and fluidInInput.amount ~= nil then
             inputLevel = fluidInInput.amount
         end
-
-        local success = transposer.proxy.transferFluid(transposer.ozoneSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.ozoneTankNum)
-        if not success then
-            print("Failed to transfer ozone! Please check your setup!")
-            PlantControllers.t2.setWorkAllowed(false)
-            return false
+        if inputLevel ~= hatchFillTarget then
+            local success = transposer.proxy.transferFluid(transposer.ozoneSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.ozoneTankNum)
+            if not success then
+                print("Failed to transfer ozone! Please check your setup!")
+                PlantControllers.t2.setWorkAllowed(false)
+                return false
+            end
         end
+        
         -- skip to new cycle before restarting logic
         os.sleep(bufferTimeSeconds * 2)
         levels = GetFluidLevels()

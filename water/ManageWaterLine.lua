@@ -122,7 +122,7 @@ local function calculateMissingSingleTier(tierExists, nextTierNeeded, level, tar
             missing = minBatch
         end
     end
-    if (missing < minBatch) then
+    if (missing > 0 and missing < minBatch) then
         missing = minBatch
     end
     local inputNeeded = missing / (0.9 * successChance)
