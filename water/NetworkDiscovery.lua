@@ -45,7 +45,6 @@ InputTransposers = {
     t8 = {proxy = nil}
 }
 RedstoneIOs = {
-    pH=component.proxy(PH_SENSOR_ADDRESS,"redstone"),
     lens=component.proxy(LENS_SENSOR_ADDRESS,"redstone")
 }
 
@@ -242,10 +241,9 @@ if (PlantControllers.t3 == nil) ~= (InputTransposers.t3.proxy == nil) then
     error(string.format("T3 controller/transposer mismatch! %s/%s", PlantControllers.t3 == nil,
         InputTransposers.t3.proxy == nil))
 end
-if (PlantControllers.t4 == nil) ~= (InputTransposers.t4.proxy == nil) or (PlantControllers.t4 == nil) ~= (RedstoneIOs.pH == nil) then
-    error(string.format("T4 controller/transposer/redstone mismatch! %s/%s/%s", PlantControllers.t4 == nil,
-        InputTransposers.t4.proxy == nil,
-        RedstoneIOs.pH == nil))
+if (PlantControllers.t4 == nil) ~= (InputTransposers.t4.proxy == nil) then
+    error(string.format("T4 controller/transposer mismatch! %s/%s", PlantControllers.t4 == nil,
+        InputTransposers.t4.proxy == nil))
 end
 if (PlantControllers.t5 == nil) ~= (InputTransposers.t5.proxy == nil) then
     error(string.format("T5 controller/transposer mismatch! %s/%s", PlantControllers.t5 == nil,

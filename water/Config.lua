@@ -1,8 +1,7 @@
 T2_INPUT_HATCH_SIZE = 1024000
 T3_INPUT_HATCH_SIZE = 1024000
 
--- THESE MUST BE SET BY HAND
-PH_SENSOR_ADDRESS = ""
+-- THESE MUST BE SET BY HAND (use analyser and then click the chat log to get address)
 LENS_SENSOR_ADDRESS = ""
 
 -- Modify these to set desired target values in L, remember to reboot
