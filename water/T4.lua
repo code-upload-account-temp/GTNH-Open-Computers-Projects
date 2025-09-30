@@ -57,12 +57,7 @@ function RunT4(targetLevel)
                     if NaOH > 64 then
                         NaOH = 64 -- we only move a stack at a time at most, maximum 4 iterations to move the biggest distance upwards
                     end
-                    local amountMoved = transposer.proxy.transferItem(transposer.sodiumHydroxideSide, transposer.inputSide, NaOH)
-                    if amountMoved ~= NaOH then
-                        print("Failed to transfer sodium hydroxide! Please check your setup!", amountMoved, NaOH)
-                        PlantControllers.t4.setWorkAllowed(false)
-                        return false
-                    end
+                    transposer.proxy.transferItem(transposer.sodiumHydroxideSide, transposer.inputSide, NaOH)
                 end
                 os.sleep(2)
             end
