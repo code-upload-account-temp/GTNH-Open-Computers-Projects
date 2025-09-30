@@ -32,7 +32,7 @@ function RunT4(targetLevel)
             WaitForNextCycle(-1)
             local phBalanced = false
             local phConfirmed = false
-            while not phBalanced and not phConfirmed do
+            while not phConfirmed do
                 local pH = getpH()
                 if pH > 6.95 and pH < 7.05 then
                     -- Perfect, we're done
