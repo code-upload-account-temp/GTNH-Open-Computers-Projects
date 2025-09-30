@@ -31,10 +31,14 @@ function RunT4(targetLevel)
         while levels.t4 < targetLevel do
             WaitForNextCycle(-1)
             local phBalanced = false
-            while not phBalanced do
+            local phConfirmed = false
+            while not phBalanced and not phConfirmed do
                 local pH = getpH()
                 if pH > 6.95 and pH < 7.05 then
                     -- Perfect, we're done
+                    if phBalanced then
+                        phConfirmed = true
+                    end
                     phBalanced = true
                 elseif pH >= 7.05 then
                     -- Need to add hydrochloric, 10L per 0.01
@@ -50,12 +54,12 @@ function RunT4(targetLevel)
                     -- Need to add sodium hydroxide, 1 per 0.01
                     local difference = (6.96 - pH)/0.01
                     local NaOH = difference
-                    if difference > 64 then
-                        difference = 64 -- we only move a stack at a time at most, maximum 4 iterations to move the biggest distance upwards
+                    if NaOH > 64 then
+                        NaOH = 64 -- we only move a stack at a time at most, maximum 4 iterations to move the biggest distance upwards
                     end
                     local amountMoved = transposer.proxy.transferItem(transposer.sodiumHydroxideSide, transposer.inputSide, NaOH)
-                    if amountMoved ~= difference then
-                        print("Failed to transfer sodium hydroxide! Please check your setup!")
+                    if amountMoved ~= NaOH then
+                        print("Failed to transfer sodium hydroxide! Please check your setup!", amountMoved, NaOH)
                         PlantControllers.t4.setWorkAllowed(false)
                         return false
                     end
