@@ -33,14 +33,14 @@ function RunT4(targetLevel)
             local phBalanced = false
             while not phBalanced do
                 local pH = getpH()
-                if pH >= 6.95 and pH <= 7.05 then
+                if pH > 6.95 and pH < 7.05 then
                     -- Perfect, we're done
                     phBalanced = true
-                elseif pH > 7.05 then
+                elseif pH >= 7.05 then
                     -- Need to add hydrochloric, 10L per 0.01
                     local difference = (pH - 7.04)/0.01
                     local hcl = difference * 10
-                    local success = transposer.proxy.transferFluid(transposer.hydrochloricSide, transposer.inputSide, hcl, transposer.hydrochloricTankNum)
+                    local success = transposer.proxy.transferFluid(transposer.hydrochloricSide, transposer.inputSide, hcl, transposer.hydrochloricTankNum-1)
                     if not success then
                         print("Failed to transfer hydrochloric acid! Please check your setup!")
                         PlantControllers.t4.setWorkAllowed(false)
