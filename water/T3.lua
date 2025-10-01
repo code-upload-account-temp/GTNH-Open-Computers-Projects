@@ -8,7 +8,7 @@ function RunT3(targetLevel)
     while hatchFillTarget < 900000 and hatchFillTarget + 100000 < T3_INPUT_HATCH_SIZE do
         hatchFillTarget = hatchFillTarget + 100000
     end
-    while levels.t3 < targetLevel and levels.polyAlCl >= hatchFillTarget and levels.t2 >= T2_MAINTAIN + (T3_MIN_BATCH/0.9) do
+    while levels.t3 < targetLevel and levels.polyAlCl >= hatchFillTarget and levels.t2 >= T2_MAINTAIN do
         if not PlantControllers.t3.isWorkAllowed() then
             PlantControllers.t3.setWorkAllowed(true)
         end

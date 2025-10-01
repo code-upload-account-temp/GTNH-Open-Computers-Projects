@@ -29,7 +29,7 @@ function RunT4(targetLevel)
         if not PlantControllers.t4.isWorkAllowed() then
             PlantControllers.t4.setWorkAllowed(true)
         end
-        while levels.t4 < targetLevel and levels.hydrochloric > 16000 and solids.sodiumHydroxide > 512 and levels.t3 > T3_MAINTAIN + (T4_MIN_BATCH/0.9) do
+        while levels.t4 < targetLevel and levels.hydrochloric > 16000 and solids.sodiumHydroxide > 512 and levels.t3 > T3_MAINTAIN do
             WaitForNextCycle(-1)
             local phBalanced = false
             local phConfirmed = false
