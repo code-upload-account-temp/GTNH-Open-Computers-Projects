@@ -48,6 +48,22 @@ function WaitForNextCycle(bufferTimeSeconds)
     end
 end
 
+function GetSolidLevels()
+    local levels = {
+        filters = 0,
+        sodiumHydroxide = 0
+    }
+    local filterStack = AE2.getItemsInNetwork({label="Activated Carbon Filter Mesh"})[1]
+    if filterStack ~= nil then
+        levels.filters = filterStack.size
+    end
+    local NaOHStack = AE2.getItemsInNetwork({label="Sodium Hydroxide Dust"})[1]
+    if NaOHStack ~= nil then
+        levels.sodiumHydroxide = NaOHStack.size
+    end
+    return levels
+end
+
 function GetFluidLevels()
     local levels = {
         t1=0,t2=0,t3=0,t4=0,t5=0,t6=0,t7=0,t8=0,

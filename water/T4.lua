@@ -22,13 +22,14 @@ end
 
 function RunT4(targetLevel)
     local levels = GetFluidLevels()
+    local solids = GetSolidLevels()
     local transposer = InputTransposers.t4
     if levels.t4 < targetLevel then
         WaitForNextCycle(2)
         if not PlantControllers.t4.isWorkAllowed() then
             PlantControllers.t4.setWorkAllowed(true)
         end
-        while levels.t4 < targetLevel do
+        while levels.t4 < targetLevel and levels.hydrochloric > 16000 and solids.sodiumHydroxide > 512 and levels.t3 > T3_MAINTAIN + (T4_MIN_BATCH/0.9) do
             WaitForNextCycle(-1)
             local phBalanced = false
             local phConfirmed = false
@@ -65,6 +66,7 @@ function RunT4(targetLevel)
                 os.sleep(2)
             end
             levels = GetFluidLevels()
+            solids = GetSolidLevels()
         end
         PlantControllers.t2.setWorkAllowed(false)
     end
