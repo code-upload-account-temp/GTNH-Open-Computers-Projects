@@ -33,7 +33,7 @@ function RunT6(targetLevel)
             if signal > 0 then
                 -- Need lens change
                 print("Removing current lens")
-                transposer.proxy.transferItem(transposer.inputSide, transposer.lensesSide, 1, 1, 1)
+                transposer.proxy.transferItem(transposer.inputSide, transposer.lensesSide, 1, 1)
                 currentIndex = currentIndex + 1
                 local lensType = LensSequence[currentIndex]
                 if lensType == nil then
@@ -49,11 +49,12 @@ function RunT6(targetLevel)
                         PlantControllers.t6.setWorkAllowed(false)
                         error(string.format("Missing %s! Only dilithium is allowed to be skipped in this implementation", lensType))
                     end
-                end
-                print(string.format("Inserting %s", lensType))
-                transposer.proxy.transferItem(transposer.lensesSide, transposer.inputSide, 1, lensSlot, 1)
-                if lensType == Dilithium then
-                    finishedCycle = true
+                else 
+                    print(string.format("Inserting %s", lensType))
+                    transposer.proxy.transferItem(transposer.lensesSide, transposer.inputSide, 1, lensSlot, 1)
+                    if lensType == Dilithium then
+                        finishedCycle = true
+                    end
                 end
             end
             os.sleep(2)
