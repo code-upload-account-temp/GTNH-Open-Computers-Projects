@@ -37,6 +37,7 @@ function RunT6(targetLevel)
                 currentIndex = currentIndex + 1
                 local lensType = LensSequence[currentIndex]
                 if lensType == nil then
+                    PlantControllers.t6.setWorkAllowed(false)
                     error("somehow requested invalid lens in T6")
                 end
                 local lensSlot = transposer.lensSlotMap[lensType]
@@ -45,7 +46,8 @@ function RunT6(targetLevel)
                         print("Skipping Dilithium Lens as it is not yet present (need Mothership)")
                         finishedCycle = true
                     else
-                        error(string.format("Missing %! Only dilithium is allowed to be skipped in this implementation", lensType))
+                        PlantControllers.t6.setWorkAllowed(false)
+                        error(string.format("Missing %s! Only dilithium is allowed to be skipped in this implementation", lensType))
                     end
                 end
                 print(string.format("Inserting %s", lensType))
