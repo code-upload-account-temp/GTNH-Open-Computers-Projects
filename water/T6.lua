@@ -18,7 +18,7 @@ function RunT6(targetLevel)
     for i = 1,transposer.proxy.getInventorySize(transposer.lensesSide) do
         local stack = transposer.proxy.getStackInSlot(transposer.lensesSide, i)
         if stack ~= nil then
-            transposer.lensSlotMap[stack.name] = i
+            transposer.lensSlotMap[stack.label] = i
         end
     end
     while levels.t6 < targetLevel and levels.t5 >= T5_MAINTAIN do
