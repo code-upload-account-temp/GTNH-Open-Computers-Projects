@@ -38,7 +38,8 @@ InputTransposers = {
     t6 = {
         proxy = nil,
         lensesSide = nil,
-        lensSlotMap = {}, -- TODO: fill out lens types
+        --- @type table<string, number>
+        lensSlotMap = {}, 
         inputSide = nil,
     },
     t7 = {proxy = nil},
@@ -223,7 +224,7 @@ for addr, v in pairs(transposers) do
         InputTransposers.t6 = {
             proxy = transposer,
             lensesSide = solids.lenses.side,
-            lensSlotMap = {}, -- TODO: fill out lens types
+            lensSlotMap = {}, 
             inputSide = solids.inputBus.side
         }
     end
