@@ -307,7 +307,7 @@ for addr, v in pairs(transposers) do
         print("T8 discovered at ", addr)
         InputTransposers.t8 = {
             proxy = transposer,
-            lensesSide = solids.quarks.side,
+            quarksSide = solids.quarks.side,
             --- @type table<string, number>
             quarksSlotMap = {
                 up = 1,

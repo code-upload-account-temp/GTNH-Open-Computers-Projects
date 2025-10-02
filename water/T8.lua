@@ -39,6 +39,7 @@ function RunT8(targetLevel)
         local index = 1
         while not hasSucceeded() and index <= 18 do
             transposer.proxy.transferItem(transposer.quarksSide, transposer.inputSide, 1, sequence[index], 1)
+            index = index + 1
             os.sleep(2)
         end
         if not hasSucceeded() then
