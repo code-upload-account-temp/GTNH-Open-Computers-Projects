@@ -43,6 +43,7 @@ function RunT7(targetLevel)
                 -- skip all other processing if bit4 is set
                 if bit3 then
                     -- needs neutronium
+                    print("Adding neutronium for T7")
                     local success = transposer.proxy.transferFluid(transposer.fluidsSide, transposer.inputSide, 4608, transposer.fluidsTankMap.neutronium-1)
                     if not success then
                         PlantControllers.t7.setWorkAllowed(false)
@@ -52,6 +53,7 @@ function RunT7(targetLevel)
                 end
                 if bit2 then
                     -- needs superconductor base
+                    print("Adding molten superconductor base for T7")
                     local success = transposer.proxy.transferFluid(transposer.superConductorSide, transposer.inputSide, 1440, transposer.superConductorTankNum-1)
                     if not success then
                         PlantControllers.t7.setWorkAllowed(false)
@@ -81,6 +83,7 @@ function RunT7(targetLevel)
                         tankNum = transposer.fluidsTankMap.helium
                         amount = 10000
                     end
+                    print("Adding noble gas for T7")
                     local success = transposer.proxy.transferFluid(transposer.fluidsSide, transposer.inputSide, amount, tankNum-1)
                     if not success then
                         PlantControllers.t7.setWorkAllowed(false)
@@ -88,6 +91,8 @@ function RunT7(targetLevel)
                         return false
                     end
                 end
+            else
+                print("Bit 4 was set for T7, skipping all fluid input")
             end
             -- TODO: process bits
             levels = GetFluidLevels()

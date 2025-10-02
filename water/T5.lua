@@ -32,8 +32,10 @@ function RunT5(targetLevel)
         while timesCooled < 3 do
             local temp = getTemp()
             if temp == 10000 and timesCooled == timesHeated then
+                print("T5 heating completed, adding coolant")
                 timesHeated = timesHeated + 1
             elseif temp == 0 and timesCooled < timesHeated then
+                print("T5 cooling completed, adding helium plasma unless this is the third cycle")
                 timesCooled = timesCooled + 1
             else 
                 if timesHeated == timesCooled then
@@ -66,6 +68,7 @@ function RunT5(targetLevel)
             end
             
         end
+        print("T5 all heating cycles complete, waiting for next cycle")
         levels = GetFluidLevels()
     end
     PlantControllers.t5.setWorkAllowed(false)

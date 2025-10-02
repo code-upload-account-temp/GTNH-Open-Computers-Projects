@@ -15,6 +15,7 @@ function RunT2(targetLevel)
             inputLevel = fluidInInput.amount
         end
         if inputLevel ~= hatchFillTarget then
+            print("Adding ozone for T2")
             local success = transposer.proxy.transferFluid(transposer.ozoneSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.ozoneTankNum)
             if not success then
                 print("Failed to transfer ozone! Please check your setup!")

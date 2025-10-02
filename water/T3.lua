@@ -20,6 +20,7 @@ function RunT3(targetLevel)
         end
 
         if inputLevel ~= hatchFillTarget then
+            print("Adding Poly Aluminium Chloride for T3")
             local success = transposer.proxy.transferFluid(transposer.polyAlClSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.polyAlClTankNum)
             if not success then
                 print("Failed to transfer poly aluminium chloride! Please check your setup!")

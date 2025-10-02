@@ -5,7 +5,8 @@ function RunT1(targetLevel)
         if not PlantControllers.t1.isWorkAllowed() then
             PlantControllers.t1.setWorkAllowed(true)
         end
-        os.sleep(120)
+        print("No logic needed for T1, sleeping through cycle...")
+        WaitForNextCycle(-1)
         levels = GetFluidLevels()
         solids = GetSolidLevels()
     end
