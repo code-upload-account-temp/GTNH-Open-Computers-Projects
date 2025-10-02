@@ -67,12 +67,12 @@ function GetSolidLevels()
     if NaOHStack ~= nil then
         levels.sodiumHydroxide = NaOHStack.size
     end
-    local upQuarks = AE2.getItemsInNetwork({label="UP"..QUARK_CATALYST_LABEL_SUFFIX})[1]
-    local downQuarks = AE2.getItemsInNetwork({label="DOWN"..QUARK_CATALYST_LABEL_SUFFIX})[1]
-    local topQuarks = AE2.getItemsInNetwork({label="TOP"..QUARK_CATALYST_LABEL_SUFFIX})[1]
-    local bottomQuarks = AE2.getItemsInNetwork({label="BOTTOM"..QUARK_CATALYST_LABEL_SUFFIX})[1]
-    local strangeQuarks = AE2.getItemsInNetwork({label="STRANGE"..QUARK_CATALYST_LABEL_SUFFIX})[1]
-    local charmQuarks = AE2.getItemsInNetwork({label="CHARM"..QUARK_CATALYST_LABEL_SUFFIX})[1]
+    local upQuarks = AE2.getItemsInNetwork({label="Up"..QUARK_CATALYST_LABEL_SUFFIX})[1]
+    local downQuarks = AE2.getItemsInNetwork({label="Down"..QUARK_CATALYST_LABEL_SUFFIX})[1]
+    local topQuarks = AE2.getItemsInNetwork({label="Top"..QUARK_CATALYST_LABEL_SUFFIX})[1]
+    local bottomQuarks = AE2.getItemsInNetwork({label="Bottom"..QUARK_CATALYST_LABEL_SUFFIX})[1]
+    local strangeQuarks = AE2.getItemsInNetwork({label="Strange"..QUARK_CATALYST_LABEL_SUFFIX})[1]
+    local charmQuarks = AE2.getItemsInNetwork({label="Charm"..QUARK_CATALYST_LABEL_SUFFIX})[1]
     if upQuarks ~= nil then
         levels.upQuarks = upQuarks.size
     end

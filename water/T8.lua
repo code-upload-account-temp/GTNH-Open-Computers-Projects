@@ -49,6 +49,7 @@ function RunT8(targetLevel)
         levels = GetFluidLevels()
         solids = GetSolidLevels()
     end
+    print(string.format("Ending T8 run at input levels:\nT8 Water: %i, Up Quarks: %i, Down Quarks: %i, Top Quarks: %i, Bottom Quarks: %i, Strange Quarks: %i, Charm Quarks: %i, T7 Water: %i", levels.t8, solids.upQuarks, solids.downQuarks, solids.topQuarks, solids.bottomQuarks, solids.strangeQuarks, solids.charmQuarks, levels.t7))
     PlantControllers.t8.setWorkAllowed(false)
     return levels.t8 >= targetLevel
 end
