@@ -42,8 +42,36 @@ InputTransposers = {
         lensSlotMap = {}, 
         inputSide = nil,
     },
-    t7 = {proxy = nil},
-    t8 = {proxy = nil}
+    t7 = {
+        proxy = nil,
+        fluidsSide = nil,
+        --- @type table<string, number>
+        fluidsTankMap = {
+            superCoolant = 1,
+            helium = 2,
+            neon = 3,
+            krypton = 4,
+            xenon = 5,
+            neutronium = 6
+        },
+        superConductorSide = nil,
+        superConductorTankNum = nil,
+        inputSide = nil,
+    },
+    t8 = {
+        proxy = nil,
+        quarksSide = nil,
+        --- @type table<string, number>
+        quarksSlotMap = {
+            up = 1,
+            down = 2,
+            top = 3,
+            bottom = 4,
+            strange = 5,
+            charm = 6
+        },
+        inputSide = nil
+    }
 }
 RedstoneIOs = {
     lens=component.proxy(LENS_SENSOR_ADDRESS,"redstone")
@@ -83,18 +111,26 @@ for addr, v in pairs(transposers) do
     -- Get relevant transposer to run queries on
     local transposer = component.proxy(addr, "transposer")
     -- Prepare storage for network discovery findings
+    local superconductorFluidName = SUPERCONDUCTOR_BASE_LABEL_PREFIX .. T7_SUPERCONDUCTOR_BASE_TIER
     local fluids = {
         ozone = { present = false, side = nil, tank = nil },
         polyAlCl = { present = false, side = nil, tank = nil },
         hydrochloric = { present = false, side = nil, tank = nil },
         heliumPlasma = { present = false, side = nil, tank = nil },
         superCoolant = { present = false, side = nil, tank = nil },
+        heliumGas = { present = false, side = nil, tank = nil },
+        neonGas = { present = false, side = nil, tank = nil },
+        kryptonGas = { present = false, side = nil, tank = nil },
+        xenonGas = { present = false, side = nil, tank = nil },
+        neutronium = { present = false, side = nil, tank = nil },
+        superConductor = { present = false, side = nil, tank = nil },
         inputHatch = { present = false, side = nil }
     }
     -- TODO: T7 and T8 fluid registry
     local solids = {
         sodiumHydroxide = { present = false, side = nil, slot = nil },
-        lenses = { present = false, side = nil, slot = nil },
+        lenses = { present = false, side = nil },
+        quarks = { present = false, side = nil },
         inputBus = { present = false, side = nil, slot = nil }
     }
     -- TODO: T7 and T8 solid inputs
@@ -128,6 +164,30 @@ for addr, v in pairs(transposers) do
                     fluids.superCoolant.present = true
                     fluids.superCoolant.side = sideNum
                     fluids.superCoolant.tank = tankNum
+                elseif contents.name == HELIUM_GAS_NAME then
+                    fluids.heliumGas.present = true
+                    fluids.heliumGas.side = sideNum
+                    fluids.heliumGas.tank = tankNum
+                elseif contents.name == NEON_GAS_NAME then
+                    fluids.neonGas.present = true
+                    fluids.neonGas.side = sideNum
+                    fluids.neonGas.tank = tankNum
+                elseif contents.name == KRYPTON_GAS_NAME then
+                    fluids.kryptonGas.present = true
+                    fluids.kryptonGas.side = sideNum
+                    fluids.kryptonGas.tank = tankNum
+                elseif contents.name == XENON_GAS_NAME then
+                    fluids.xenonGas.present = true
+                    fluids.xenonGas.side = sideNum
+                    fluids.xenonGas.tank = tankNum
+                elseif contents.name == MOLTEN_NEUTRONIUM_NAME then
+                    fluids.neutronium.present = true
+                    fluids.neutronium.side = sideNum
+                    fluids.neutronium.tank = tankNum
+                elseif contents.label == superconductorFluidName then
+                    fluids.superConductor.present = true
+                    fluids.superConductor.side = sideNum
+                    fluids.superConductor.tank = tankNum
                 end
             end
         end
@@ -153,21 +213,18 @@ for addr, v in pairs(transposers) do
                             solids.sodiumHydroxide.present = true
                             solids.sodiumHydroxide.side = sideNum
                             solids.sodiumHydroxide.slot = slotNum
-                        elseif stack.label == "Orundum Lens" then -- TODO: the rest of the lenses
+                        elseif stack.label == "Orundum Lens" then
                             solids.lenses.present = true
                             solids.lenses.side = sideNum
-                            solids.lenses.slot = slotNum
+                        elseif string.find(stack.label, QUARK_CATALYST_LABEL_SUFFIX) ~= nil then
+                            solids.quarks.present = true
+                            solids.quarks.side = sideNum
                         end
                     end
                 end
             end
         end
     end
-    -- Now that we have the sides of this transposer discovered, look for a configuration which matches one of the water plants
-
-    -- print("Dumping data of transposer ", addr)
-    -- print("fluids", TableToString(fluids))
-    -- print("solids", TableToString(solids))
 
     -- T2
     if fluids.ozone.present and fluids.inputHatch.present then
@@ -227,6 +284,63 @@ for addr, v in pairs(transposers) do
             lensSlotMap = {}, 
             inputSide = solids.inputBus.side
         }
+    end
+
+    -- T7
+
+    if fluids.heliumGas.present and fluids.neonGas.present and fluids.kryptonGas.present and fluids.xenonGas.presnet and fluids.superCoolant.present and fluids.neutronium.present and fluids.superConductor.present and fluids.inputHatch.present then
+        print("T7 discovered at ", addr)
+        InputTransposers.t7 = {
+            proxy = transposer,
+            fluidsSide = fluids.heliumGas.side, -- Assuming all fluids except superconductor base are in one dual interface
+            fluidsTankMap = {
+                superCoolant = fluids.superCoolant.tank,
+                helium = fluids.heliumGas.tank,
+                neon = fluids.neonGas.tank,
+                krypton = fluids.kryptonGas.tank,
+                xenon = fluids.xenonGas.tank,
+                neutronium = fluids.neutronium.tank
+            },
+            inputSide = fluids.inputHatch.side,
+            superConductorSide = fluids.superConductor.side,
+            superConductorTankNum = fluids.superConductor.tank
+        }
+    end
+
+    -- T8
+
+    if solids.quarks.present and solids.inputBus.present then
+        print("T8 discovered at ", addr)
+        InputTransposers.t8 = {
+            proxy = transposer,
+            lensesSide = solids.quarks.side,
+            --- @type table<string, number>
+            quarksSlotMap = {
+                up = 1,
+                down = 2,
+                top = 3,
+                bottom = 4,
+                strange = 5,
+                charm = 6
+            },
+            inputSide = solids.inputBus.side
+        }
+        for i = 1,transposer.getInventorySize(solids.quarks.side) do
+            local label = transposer.getStackInSlot(solids.quarks.side, i).label
+            if label == "UP" .. QUARK_CATALYST_LABEL_SUFFIX then
+                InputTransposers.t8.quarksSlotMap.up = i
+            elseif label == "DOWN" .. QUARK_CATALYST_LABEL_SUFFIX then
+                InputTransposers.t8.quarksSlotMap.down = i
+            elseif label == "TOP" .. QUARK_CATALYST_LABEL_SUFFIX then
+                InputTransposers.t8.quarksSlotMap.top = i
+            elseif label == "BOTTOM" .. QUARK_CATALYST_LABEL_SUFFIX then
+                InputTransposers.t8.quarksSlotMap.bottom = i
+            elseif label == "STRANGE" .. QUARK_CATALYST_LABEL_SUFFIX then
+                InputTransposers.t8.quarksSlotMap.strange = i
+            elseif label == "CHARM" .. QUARK_CATALYST_LABEL_SUFFIX then
+                InputTransposers.t8.quarksSlotMap.charm = i
+            end
+        end
     end
 end
 
