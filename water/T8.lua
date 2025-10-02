@@ -31,7 +31,7 @@ function RunT8(targetLevel)
     local levels = GetFluidLevels()
     print("Not yet implemented")
     return false
-    -- while levels.t8 < targetLevel do
+    -- while levels.t8 < targetLevel and solids.upQuarks > 6 and solids.downQuarks > 6 and solids.topQuarks > 6 and solids.bottomQuarks > 6 and solids.strangeQuarks > 6 and solids.charmQuarks > 6 do
     --     if not PlantControllers.t8.isWorkAllowed() then
     --         PlantControllers.t8.setWorkAllowed(true)
     --     end

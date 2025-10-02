@@ -67,22 +67,29 @@ function GetSolidLevels()
     if NaOHStack ~= nil then
         levels.sodiumHydroxide = NaOHStack.size
     end
-    local quarksList = AE2.getItemsInNetwork({label=QUARK_CATALYST_LABEL_SUFFIX})
-    for _, stack in ipairs(quarksList) do
-        local metaId = stack.damage - 32235
-        if metaId == 0 then
-            levels.upQuarks = stack.size
-        elseif metaId == 1 then
-            levels.downQuarks = stack.size
-        elseif metaId == 2 then
-            levels.strangeQuarks = stack.size
-        elseif metaId == 3 then
-            levels.charmQuarks = stack.size
-        elseif metaId == 4 then
-            levels.bottomQuarks = stack.size
-        elseif metaId == 5 then
-            levels.topQuarks = stack.size
-        end
+    local upQuarks = AE2.getItemsInNetwork({label="UP"..QUARK_CATALYST_LABEL_SUFFIX})[1]
+    local downQuarks = AE2.getItemsInNetwork({label="DOWN"..QUARK_CATALYST_LABEL_SUFFIX})[1]
+    local topQuarks = AE2.getItemsInNetwork({label="TOP"..QUARK_CATALYST_LABEL_SUFFIX})[1]
+    local bottomQuarks = AE2.getItemsInNetwork({label="BOTTOM"..QUARK_CATALYST_LABEL_SUFFIX})[1]
+    local strangeQuarks = AE2.getItemsInNetwork({label="STRANGE"..QUARK_CATALYST_LABEL_SUFFIX})[1]
+    local charmQuarks = AE2.getItemsInNetwork({label="CHARM"..QUARK_CATALYST_LABEL_SUFFIX})[1]
+    if upQuarks ~= nil then
+        levels.upQuarks = upQuarks.size
+    end
+    if downQuarks ~= nil then
+        levels.downQuarks = downQuarks.size
+    end
+    if topQuarks ~= nil then
+        levels.strangeQuarks = topQuarks.size
+    end
+    if bottomQuarks ~= nil then
+        levels.charmQuarks = bottomQuarks.size
+    end
+    if strangeQuarks ~= nil then
+        levels.bottomQuarks = strangeQuarks.size
+    end
+    if charmQuarks ~= nil then
+        levels.topQuarks = charmQuarks.size
     end
     return levels
 end

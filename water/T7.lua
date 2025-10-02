@@ -29,14 +29,13 @@ end
 
 function RunT7(targetLevel)
     local levels = GetFluidLevels()
-    local solids = GetSolidLevels()
     local transposer = InputTransposers.t7
     if levels.t7 < targetLevel then
         WaitForNextCycle(2)
         if not PlantControllers.t7.isWorkAllowed() then
             PlantControllers.t7.setWorkAllowed(true)
         end
-        while levels.t7 < targetLevel and solids.upQuarks > 6 and solids.downQuarks > 6 and solids.topQuarks > 6 and solids.bottomQuarks > 6 and solids.strangeQuarks > 6 and solids.charmQuarks > 6 and levels.t6 > T6_MAINTAIN do
+        while levels.t7 < targetLevel and levels.heliumGas > 20000 and levels.neonGas > 1500 and levels.kryptonGas > 10000 and levels.xenonGas > 5000 and levels.neutronium > 10000 and levels.superConductorBase > 3000 and levels.t6 > T6_MAINTAIN do
             WaitForNextCycle(-1)
             local bit4, bit3, bit2, bit1 = getControlSignal()
             if not bit4 then
@@ -96,7 +95,6 @@ function RunT7(targetLevel)
             end
             -- TODO: process bits
             levels = GetFluidLevels()
-            solids = GetSolidLevels()
         end
         PlantControllers.t7.setWorkAllowed(false)
     end
