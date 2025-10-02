@@ -51,7 +51,13 @@ end
 function GetSolidLevels()
     local levels = {
         filters = 0,
-        sodiumHydroxide = 0
+        sodiumHydroxide = 0,
+        upQuarks = 0,
+        downQuarks = 0,
+        topQuarks = 0,
+        bottomQuarks = 0,
+        strangeQuarks = 0,
+        charmQuarks = 0
     }
     local filterStack = AE2.getItemsInNetwork({label="Activated Carbon Filter Mesh"})[1]
     if filterStack ~= nil then
@@ -60,6 +66,23 @@ function GetSolidLevels()
     local NaOHStack = AE2.getItemsInNetwork({label="Sodium Hydroxide Dust"})[1]
     if NaOHStack ~= nil then
         levels.sodiumHydroxide = NaOHStack.size
+    end
+    local quarksList = AE2.getItemsInNetwork({label=QUARK_CATALYST_LABEL_SUFFIX})
+    for _, stack in ipairs(quarksList) do
+        local metaId = stack.damage - 32235
+        if metaId == 0 then
+            levels.upQuarks = stack.size
+        elseif metaId == 1 then
+            levels.downQuarks = stack.size
+        elseif metaId == 2 then
+            levels.strangeQuarks = stack.size
+        elseif metaId == 3 then
+            levels.charmQuarks = stack.size
+        elseif metaId == 4 then
+            levels.bottomQuarks = stack.size
+        elseif metaId == 5 then
+            levels.topQuarks = stack.size
+        end
     end
     return levels
 end
@@ -71,7 +94,14 @@ function GetFluidLevels()
         polyAlCl=0,
         hydrochloric=0,
         helium=0,
-        supercoolant=0
+        supercoolant=0,
+        heliumGas=0,
+        neonGas=0,
+        kryptonGas=0,
+        xenonGas=0,
+        neutronium=0,
+        superConductorBase=0,
+        infinity=0,
     }
     local fluids = AE2.getFluidsInNetwork()
     for _,fluid in ipairs(fluids) do
@@ -113,6 +143,27 @@ function GetFluidLevels()
         end
         if fluid.name == "supercoolant" then
             levels.supercoolant = fluid.amount
+        end
+        if fluid.name == HELIUM_GAS_NAME then
+            levels.heliumGas = fluid.amount
+        end
+        if fluid.name == NEON_GAS_NAME then
+            levels.neonGas = fluid.amount
+        end
+        if fluid.name == KRYPTON_GAS_NAME then
+            levels.kryptonGas = fluid.amount
+        end
+        if fluid.name == XENON_GAS_NAME then
+            levels.xenonGas = fluid.amount
+        end
+        if fluid.name == MOLTEN_NEUTRONIUM_NAME then
+            levels.neutronium = fluid.amount
+        end
+        if fluid.name == MOLTEN_INFINITY_NAME then
+            levels.infinity = fluid.amount
+        end
+        if fluid.name == SUPERCONDUCTOR_BASE_LABEL_PREFIX .. T7_SUPERCONDUCTOR_BASE_TIER then
+            levels.superConductorBase = fluid.amount
         end
     end
     return levels

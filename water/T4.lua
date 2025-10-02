@@ -8,9 +8,8 @@ local function getpH()
         end
     end
     if phSensorString == nil then
-        print("failed to find ph value in sensor data for T4 controller, something's gone wrong and T4 can't function")
         PlantControllers.t4.setWorkAllowed(false)
-        error("pH string conversion went wrong! this fully breaks t4 processing, we need to fix the code before we can continue")
+        error("failed to find ph value in sensor data for T4 controller, something's gone wrong and T4 can't function")
     end
     local phString = string.match(phSensorString, "§e(%d+%.%d+)")
     if phString == nil then
@@ -68,7 +67,7 @@ function RunT4(targetLevel)
             levels = GetFluidLevels()
             solids = GetSolidLevels()
         end
-        PlantControllers.t2.setWorkAllowed(false)
+        PlantControllers.t4.setWorkAllowed(false)
     end
-    return levels.t2 >= targetLevel
+    return levels.t4 >= targetLevel
 end
