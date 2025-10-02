@@ -1,3 +1,32 @@
+local function hasSucceeded() 
+    local sensorData = PlantControllers.t8.getSensorInformation()
+    local successSensorString = ""
+    for _,str in ipairs(sensorData) do
+        local index = string.find(str,"Current control signal (binary)")
+        if index ~= nil then
+            successSensorString = str
+        end
+    end
+    if successSensorString == nil then
+        PlantControllers.t7.setWorkAllowed(false)
+        error("failed to find control signal in sensor data for T7 controller, something's gone wrong and T7 can't function")
+    end
+    local binaryString = string.match(successSensorString, "0b§e(%d+)")
+    if binaryString == nil then
+        PlantControllers.t7.setWorkAllowed(false)
+        error("control signal conversion went wrong! this fully breaks t7 processing, we need to fix the code before we can continue")
+    end
+    local bits = {
+        0,0,0,0
+    }
+    local i = 4
+    for bitString in string.gmatch(string.reverse(binaryString), "%d") do
+        bits[i] = tonumber(bitString)
+        i = i - 1
+    end
+    return bits[1], bits[2], bits[3], bits[4]
+end
+
 function RunT8(targetLevel)
     local levels = GetFluidLevels()
     print("Not yet implemented")

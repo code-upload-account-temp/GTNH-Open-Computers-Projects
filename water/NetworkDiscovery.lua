@@ -235,10 +235,9 @@ for addr, v in pairs(transposers) do
             ozoneTankNum = fluids.ozone.tank,
             inputSide = fluids.inputHatch.side
         }
-    end
 
     -- T3
-    if fluids.polyAlCl.present and fluids.inputHatch.present then
+    elseif fluids.polyAlCl.present and fluids.inputHatch.present then
         print("T3 discovered at ", addr)
         InputTransposers.t3 = {
             proxy = transposer,
@@ -246,10 +245,9 @@ for addr, v in pairs(transposers) do
             polyAlClTankNum = fluids.polyAlCl.tank,
             inputSide = fluids.inputHatch.side
         }
-    end
 
     -- T4
-    if fluids.hydrochloric.present and solids.sodiumHydroxide.present and solids.inputBus.present and fluids.inputHatch.present and solids.inputBus.side == fluids.inputHatch.side then
+    elseif fluids.hydrochloric.present and solids.sodiumHydroxide.present and solids.inputBus.present and fluids.inputHatch.present and solids.inputBus.side == fluids.inputHatch.side then
         print("T4 discovered at ", addr)
         InputTransposers.t4 = {
             proxy = transposer,
@@ -259,10 +257,9 @@ for addr, v in pairs(transposers) do
             hydrochloricTankNum = fluids.hydrochloric.tank,
             inputSide = solids.inputBus.side,
         }
-    end
 
     -- T5
-    if fluids.heliumPlasma.present and fluids.superCoolant.present and fluids.inputHatch.present then
+    elseif fluids.heliumPlasma.present and fluids.superCoolant.present and fluids.inputHatch.present then
         print("T5 discovered at ", addr)
         InputTransposers.t5 = {
             proxy = transposer,
@@ -272,11 +269,10 @@ for addr, v in pairs(transposers) do
             superCoolantTankNum = fluids.superCoolant.tank,
             inputSide = fluids.inputHatch.side
         }
-    end
 
     -- T6
 
-    if solids.lenses.present and solids.inputBus.present then
+    elseif solids.lenses.present and solids.inputBus.present then
         print("T6 discovered at ", addr)
         InputTransposers.t6 = {
             proxy = transposer,
@@ -284,11 +280,10 @@ for addr, v in pairs(transposers) do
             lensSlotMap = {}, 
             inputSide = solids.inputBus.side
         }
-    end
 
     -- T7
 
-    if fluids.heliumGas.present and fluids.neonGas.present and fluids.kryptonGas.present and fluids.xenonGas.presnet and fluids.superCoolant.present and fluids.neutronium.present and fluids.superConductor.present and fluids.inputHatch.present then
+    elseif fluids.heliumGas.present and fluids.neonGas.present and fluids.kryptonGas.present and fluids.xenonGas.presnet and fluids.superCoolant.present and fluids.neutronium.present and fluids.superConductor.present and fluids.inputHatch.present then
         print("T7 discovered at ", addr)
         InputTransposers.t7 = {
             proxy = transposer,
@@ -305,11 +300,10 @@ for addr, v in pairs(transposers) do
             superConductorSide = fluids.superConductor.side,
             superConductorTankNum = fluids.superConductor.tank
         }
-    end
 
     -- T8
 
-    if solids.quarks.present and solids.inputBus.present then
+    elseif solids.quarks.present and solids.inputBus.present then
         print("T8 discovered at ", addr)
         InputTransposers.t8 = {
             proxy = transposer,
@@ -341,6 +335,8 @@ for addr, v in pairs(transposers) do
                 InputTransposers.t8.quarksSlotMap.charm = i
             end
         end
+    else
+        print(string.format("supercoolant: %s, helium: %s, neon: %s, krypton: %s, xenon: %s, neutronium: %s, superconductor: %s", fluids.superCoolant.present, fluids.heliumGas.present, fluids.neonGas.present, fluids.kryptonGas.present, fluids.xenonGas.present, fluids.neutronium.present, fluids.superConductor.present))
     end
 end
 
