@@ -1,8 +1,8 @@
 local function getControlSignal() 
     local sensorData = PlantControllers.t7.getSensorInformation()
-    local controlSensorString = ""
+    local controlSensorString = nil
     for _,str in ipairs(sensorData) do
-        local index = string.find(str,"Current control signal (binary)")
+        local index = string.find(str,"Current control signal")
         if index ~= nil then
             controlSensorString = str
         end
@@ -24,7 +24,7 @@ local function getControlSignal()
         bits[i] = tonumber(bitString)
         i = i - 1
     end
-    return bits[1], bits[2], bits[3], bits[4]
+    return bits[1] == 1, bits[2] == 1, bits[3] == 1, bits[4] == 1
 end
 
 function RunT7(targetLevel)
