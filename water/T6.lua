@@ -1,3 +1,5 @@
+local sides = require("sides")
+
 local LensSequence = {
     "Orundum Lens",
     "Amber Lens",
@@ -29,7 +31,7 @@ function RunT6(targetLevel)
         local currentIndex = 0
         local finishedCycle = false
         while not finishedCycle do
-            local signal = RedstoneIOs.lens.getInput(LENS_SENSOR_SIDE)
+            local signal = RedstoneIOs.lens.getInput(sides.down)
             if signal > 0 then
                 -- Need lens change
                 print("Removing current lens")

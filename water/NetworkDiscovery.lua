@@ -74,7 +74,7 @@ InputTransposers = {
     }
 }
 RedstoneIOs = {
-    lens=component.proxy(LENS_SENSOR_ADDRESS,"redstone")
+    lens=component.redstone -- since we only use redstone for T6, we can just assume that the only redstone IO is for the lens
 }
 
 local machines = component.list("gt_machine")

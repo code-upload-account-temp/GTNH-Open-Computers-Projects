@@ -1,5 +1,3 @@
-local sides = require("sides")
-
 T2_INPUT_HATCH_SIZE = 1024000
 T3_INPUT_HATCH_SIZE = 1024000
 
