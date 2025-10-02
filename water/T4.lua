@@ -1,6 +1,6 @@
 local function getpH() 
     local sensorData = PlantControllers.t4.getSensorInformation()
-    local phSensorString = ""
+    local phSensorString = nil
     for _,str in ipairs(sensorData) do
         local index = string.find(str,"Current pH Value")
         if index ~= nil then

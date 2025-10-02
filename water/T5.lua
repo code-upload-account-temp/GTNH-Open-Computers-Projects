@@ -1,6 +1,6 @@
 local function getTemp() 
     local sensorData = PlantControllers.t5.getSensorInformation()
-    local tempSensorString = ""
+    local tempSensorString = nil
     for _,str in ipairs(sensorData) do
         local index = string.find(str,"Current temperature")
         if index ~= nil then

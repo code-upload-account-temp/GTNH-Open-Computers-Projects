@@ -1,30 +1,22 @@
 local function hasSucceeded() 
     local sensorData = PlantControllers.t8.getSensorInformation()
-    local successSensorString = ""
+    local successSensorString = nil
     for _,str in ipairs(sensorData) do
-        local index = string.find(str,"Current control signal (binary)")
+        local index = string.find(str, "Quark Combination correctly identified")
         if index ~= nil then
             successSensorString = str
         end
     end
     if successSensorString == nil then
-        PlantControllers.t7.setWorkAllowed(false)
-        error("failed to find control signal in sensor data for T7 controller, something's gone wrong and T7 can't function")
+        PlantControllers.t8.setWorkAllowed(false)
+        error("failed to find control signal in sensor data for T8 controller, something's gone wrong and T8 can't function")
     end
-    local binaryString = string.match(successSensorString, "0b§e(%d+)")
-    if binaryString == nil then
-        PlantControllers.t7.setWorkAllowed(false)
-        error("control signal conversion went wrong! this fully breaks t7 processing, we need to fix the code before we can continue")
+    local successString = string.match(successSensorString, "§c(%a+)")
+    if successString == nil then
+        PlantControllers.t8.setWorkAllowed(false)
+        error("control signal conversion went wrong! this fully breaks t8 processing, we need to fix the code before we can continue")
     end
-    local bits = {
-        0,0,0,0
-    }
-    local i = 4
-    for bitString in string.gmatch(string.reverse(binaryString), "%d") do
-        bits[i] = tonumber(bitString)
-        i = i - 1
-    end
-    return bits[1], bits[2], bits[3], bits[4]
+    return successString == "Yes"
 end
 
 function RunT8(targetLevel)
