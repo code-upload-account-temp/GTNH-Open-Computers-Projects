@@ -1,5 +1,8 @@
 local component = require("component");
-AE2 = component.me_controller
+AE2 = nil
+for addr,_ in pairs(component.list("me_controller")) do
+    AE2 = component.proxy(addr, "me_controller")
+end
 
 if AE2 == nil then
     error("No AE2 controller detected, this code cannot run without AE2 integration!")
@@ -74,8 +77,13 @@ InputTransposers = {
     }
 }
 RedstoneIOs = {
-    lens=component.redstone -- since we only use redstone for T6, we can just assume that the only redstone IO is for the lens
+    lens=nil 
 }
+
+for addr,_ in pairs(component.list("redstone")) do
+    -- since we only use redstone for T6, we can just assume that the only redstone IO is for the lens
+    RedstoneIOs.lens = component.proxy(addr, "redstone")
+end
 
 local machines = component.list("gt_machine")
 
