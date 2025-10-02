@@ -169,7 +169,7 @@ function GetFluidLevels()
         if fluid.name == MOLTEN_INFINITY_NAME then
             levels.infinity = fluid.amount
         end
-        if fluid.name == SUPERCONDUCTOR_BASE_LABEL_PREFIX .. T7_SUPERCONDUCTOR_BASE_TIER then
+        if fluid.label == SUPERCONDUCTOR_BASE_LABEL_PREFIX .. T7_SUPERCONDUCTOR_BASE_TIER then
             levels.superConductorBase = fluid.amount
         end
     end

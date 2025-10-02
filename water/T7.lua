@@ -96,6 +96,7 @@ function RunT7(targetLevel)
             -- TODO: process bits
             levels = GetFluidLevels()
         end
+        print(string.format("Ending T7 run at fluid levels:\nT7 Water: %i, Helium: %i, Neon: %i, Krypton: %i, Xenon: %i, Neutronium: %i, Superconductor: %i, T6 Water: %i", levels.t7, levels.heliumGas, levels.neonGas, levels.kryptonGas, levels.xenonGas, levels.neutronium, levels.superConductorBase, levels.t6))
         PlantControllers.t7.setWorkAllowed(false)
     end
     return levels.t7 >= targetLevel
