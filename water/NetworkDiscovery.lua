@@ -1,4 +1,5 @@
 local component = require("component");
+---@type me_controller
 AE2 = nil
 for addr,_ in pairs(component.list("me_controller")) do
     AE2 = component.proxy(addr, "me_controller")
@@ -347,7 +348,7 @@ for addr, v in pairs(transposers) do
             end
         end
     else
-        print(string.format("quarks: %s, inputBus: %s", solids.quarks.present, solids.inputBus.present))
+        -- print(string.format("quarks: %s, inputBus: %s", solids.quarks.present, solids.inputBus.present))
     end
 end
 
