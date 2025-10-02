@@ -195,7 +195,7 @@ for addr, v in pairs(transposers) do
         if inventorySize ~= nil and inventorySize > 0 then
             local invName = transposer.getInventoryName(sideNum)
             -- Ignore all inventories that are not ingredient buffers or interfaces or dual interfaces
-            if invName == ME_INGREDIENT_BUFFER_NAME or inventorySize == 1 then
+            if invName == ME_INGREDIENT_BUFFER_NAME or inventorySize == 1 or inventorySize == 2 then
                 -- ingredient buffer is always a machine input
                 -- single-slot inventory (e.g. lens housing) is also input
                 solids.inputBus.present = true
@@ -283,7 +283,7 @@ for addr, v in pairs(transposers) do
 
     -- T7
 
-    elseif fluids.heliumGas.present and fluids.neonGas.present and fluids.kryptonGas.present and fluids.xenonGas.presnet and fluids.superCoolant.present and fluids.neutronium.present and fluids.superConductor.present and fluids.inputHatch.present then
+    elseif fluids.heliumGas.present and fluids.neonGas.present and fluids.kryptonGas.present and fluids.xenonGas.present and fluids.superCoolant.present and fluids.neutronium.present and fluids.superConductor.present and fluids.inputHatch.present then
         print("T7 discovered at ", addr)
         InputTransposers.t7 = {
             proxy = transposer,
@@ -320,23 +320,26 @@ for addr, v in pairs(transposers) do
             inputSide = solids.inputBus.side
         }
         for i = 1,transposer.getInventorySize(solids.quarks.side) do
-            local label = transposer.getStackInSlot(solids.quarks.side, i).label
-            if label == "UP" .. QUARK_CATALYST_LABEL_SUFFIX then
-                InputTransposers.t8.quarksSlotMap.up = i
-            elseif label == "DOWN" .. QUARK_CATALYST_LABEL_SUFFIX then
-                InputTransposers.t8.quarksSlotMap.down = i
-            elseif label == "TOP" .. QUARK_CATALYST_LABEL_SUFFIX then
-                InputTransposers.t8.quarksSlotMap.top = i
-            elseif label == "BOTTOM" .. QUARK_CATALYST_LABEL_SUFFIX then
-                InputTransposers.t8.quarksSlotMap.bottom = i
-            elseif label == "STRANGE" .. QUARK_CATALYST_LABEL_SUFFIX then
-                InputTransposers.t8.quarksSlotMap.strange = i
-            elseif label == "CHARM" .. QUARK_CATALYST_LABEL_SUFFIX then
-                InputTransposers.t8.quarksSlotMap.charm = i
+            local stack = transposer.getStackInSlot(solids.quarks.side, i)
+            if stack ~= nil then
+                local label = stack.label
+                if label == "UP" .. QUARK_CATALYST_LABEL_SUFFIX then
+                    InputTransposers.t8.quarksSlotMap.up = i
+                elseif label == "DOWN" .. QUARK_CATALYST_LABEL_SUFFIX then
+                    InputTransposers.t8.quarksSlotMap.down = i
+                elseif label == "TOP" .. QUARK_CATALYST_LABEL_SUFFIX then
+                    InputTransposers.t8.quarksSlotMap.top = i
+                elseif label == "BOTTOM" .. QUARK_CATALYST_LABEL_SUFFIX then
+                    InputTransposers.t8.quarksSlotMap.bottom = i
+                elseif label == "STRANGE" .. QUARK_CATALYST_LABEL_SUFFIX then
+                    InputTransposers.t8.quarksSlotMap.strange = i
+                elseif label == "CHARM" .. QUARK_CATALYST_LABEL_SUFFIX then
+                    InputTransposers.t8.quarksSlotMap.charm = i
+                end
             end
         end
     else
-        print(string.format("supercoolant: %s, helium: %s, neon: %s, krypton: %s, xenon: %s, neutronium: %s, superconductor: %s", fluids.superCoolant.present, fluids.heliumGas.present, fluids.neonGas.present, fluids.kryptonGas.present, fluids.xenonGas.present, fluids.neutronium.present, fluids.superConductor.present))
+        print(string.format("quarks: %s, inputBus: %s", solids.quarks.present, solids.inputBus.present))
     end
 end
 
