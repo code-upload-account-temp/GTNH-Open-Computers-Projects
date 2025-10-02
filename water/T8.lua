@@ -21,14 +21,34 @@ end
 
 function RunT8(targetLevel)
     local levels = GetFluidLevels()
-    print("Not yet implemented")
-    return false
-    -- while levels.t8 < targetLevel and solids.upQuarks > 6 and solids.downQuarks > 6 and solids.topQuarks > 6 and solids.bottomQuarks > 6 and solids.strangeQuarks > 6 and solids.charmQuarks > 6 do
-    --     if not PlantControllers.t8.isWorkAllowed() then
-    --         PlantControllers.t8.setWorkAllowed(true)
-    --     end
-    --     os.sleep(120)
-    -- end
-    -- PlantControllers.t8.setWorkAllowed(false)
-    -- return levels.t8 >= targetLevel
+    local solids = GetSolidLevels()
+    local transposer = InputTransposers.t8
+    local slots = transposer.quarksSlotMap
+    -- 123456 135264 152436 (copied a minimal sequence from the wiki)
+    local sequence = {
+        slots.up, slots.down, slots.top, slots.bottom, slots.strange, slots.charm,
+        slots.up, slots.top, slots.strange, slots.down, slots.charm, slots.bottom,
+        slots.up, slots.strange, slots.down, slots.bottom, slots.top, slots.charm,
+    }
+    while levels.t8 < targetLevel and solids.upQuarks > 6 and solids.downQuarks > 6 and solids.topQuarks > 6 and solids.bottomQuarks > 6 and solids.strangeQuarks > 6 and solids.charmQuarks > 6 and levels.infinity >= 10368 and levels.t7 > T7_MAINTAIN do
+        WaitForNextCycle(2)
+        if not PlantControllers.t8.isWorkAllowed() then
+            PlantControllers.t8.setWorkAllowed(true)
+        end
+        WaitForNextCycle(-1)
+        local index = 1
+        while not hasSucceeded() and index <= 18 do
+            transposer.proxy.transferItem(transposer.quarksSide, transposer.inputSide, 1, sequence[index], 1)
+            os.sleep(2)
+        end
+        if not hasSucceeded() then
+            -- We somehow tried literally every combination but failed, this *shouldn't* happen unless we're not actually succeeding at moving quark catalysts around
+            PlantControllers.t8.setWorkAllowed(false)
+            print("Full sequence completed without success in T8! This shouldn't be possible unless the setup is broken")
+        end
+        levels = GetFluidLevels()
+        solids = GetSolidLevels()
+    end
+    PlantControllers.t8.setWorkAllowed(false)
+    return levels.t8 >= targetLevel
 end
