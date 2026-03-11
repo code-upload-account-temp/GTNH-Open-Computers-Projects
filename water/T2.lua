@@ -16,9 +16,9 @@ function RunT2(targetLevel)
         end
         if inputLevel ~= hatchFillTarget then
             print("Adding ozone for T2")
-            local success = transposer.proxy.transferFluid(transposer.ozoneSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.ozoneTankNum)
+            local success, err = transposer.proxy.transferFluid(transposer.ozoneSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.ozoneTankNum)
             if not success then
-                print("Failed to transfer ozone! Please check your setup!")
+                print("Failed to transfer ozone! Please check your setup! reported error: ", err)
                 PlantControllers.t2.setWorkAllowed(false)
                 return false
             end

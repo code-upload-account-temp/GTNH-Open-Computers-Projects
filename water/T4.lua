@@ -46,9 +46,9 @@ function RunT4(targetLevel)
                     print("Adding HCl at ", pH)
                     local difference = (pH - 7)/0.01
                     local hcl = difference * 10
-                    local success = transposer.proxy.transferFluid(transposer.hydrochloricSide, transposer.inputSide, hcl, transposer.hydrochloricTankNum-1)
+                    local success, err = transposer.proxy.transferFluid(transposer.hydrochloricSide, transposer.inputSide, hcl, transposer.hydrochloricTankNum-1)
                     if not success then
-                        print("Failed to transfer hydrochloric acid! Please check your setup!")
+                        print("Failed to transfer hydrochloric acid! Please check your setup! error: ", err)
                         PlantControllers.t4.setWorkAllowed(false)
                         return false
                     end

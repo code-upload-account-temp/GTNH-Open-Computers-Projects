@@ -21,9 +21,9 @@ function RunT3(targetLevel)
 
         if inputLevel ~= hatchFillTarget then
             print("Adding Poly Aluminium Chloride for T3")
-            local success = transposer.proxy.transferFluid(transposer.polyAlClSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.polyAlClTankNum)
+            local success, err = transposer.proxy.transferFluid(transposer.polyAlClSide, transposer.inputSide, hatchFillTarget - inputLevel, transposer.polyAlClTankNum)
             if not success then
-                print("Failed to transfer poly aluminium chloride! Please check your setup!")
+                print("Failed to transfer poly aluminium chloride! Please check your setup! errpr: ", err)
                 PlantControllers.t3.setWorkAllowed(false)
                 return false
             end

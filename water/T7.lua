@@ -43,20 +43,20 @@ function RunT7(targetLevel)
                 if bit3 then
                     -- needs neutronium
                     print("Adding neutronium for T7")
-                    local success = transposer.proxy.transferFluid(transposer.fluidsSide, transposer.inputSide, 4608, transposer.fluidsTankMap.neutronium-1)
+                    local success, err = transposer.proxy.transferFluid(transposer.fluidsSide, transposer.inputSide, 4608, transposer.fluidsTankMap.neutronium-1)
                     if not success then
                         PlantControllers.t7.setWorkAllowed(false)
-                        print("failed to transfer molten neutronium for t7, check your setup!")
+                        print("failed to transfer molten neutronium for t7, check your setup! error: ", err)
                         return false
                     end
                 end
                 if bit2 then
                     -- needs superconductor base
                     print("Adding molten superconductor base for T7")
-                    local success = transposer.proxy.transferFluid(transposer.superConductorSide, transposer.inputSide, 1440, transposer.superConductorTankNum-1)
+                    local success, err = transposer.proxy.transferFluid(transposer.superConductorSide, transposer.inputSide, 1440, transposer.superConductorTankNum-1)
                     if not success then
                         PlantControllers.t7.setWorkAllowed(false)
-                        print("failed to transfer molten superconductor base for t7, check your setup!")
+                        print("failed to transfer molten superconductor base for t7, check your setup! error: ", err)
                         return false
                     end
                 end
@@ -65,7 +65,6 @@ function RunT7(targetLevel)
                     local tankNum = -1
                     local amount = 0
                     if bit2 and bit3 then
-
                         -- xenon
                         tankNum = transposer.fluidsTankMap.xenon
                         amount = 2500
@@ -83,10 +82,10 @@ function RunT7(targetLevel)
                         amount = 10000
                     end
                     print("Adding noble gas for T7")
-                    local success = transposer.proxy.transferFluid(transposer.fluidsSide, transposer.inputSide, amount, tankNum-1)
+                    local success, err = transposer.proxy.transferFluid(transposer.fluidsSide, transposer.inputSide, amount, tankNum-1)
                     if not success then
                         PlantControllers.t7.setWorkAllowed(false)
-                        print("failed to transfer noble gas for t7, check your setup!")
+                        print("failed to transfer noble gas for t7, check your setup! error: ", err)
                         return false
                     end
                 end
