@@ -11,9 +11,10 @@ local function hasSucceeded()
         PlantControllers.t8.setWorkAllowed(false)
         error("failed to find control signal in sensor data for T8 controller, something's gone wrong and T8 can't function")
     end
-    local successString = string.match(successSensorString, "§c(%a+)")
+    local successString = string.match(successSensorString, "§%a(%a+)")
     if successString == nil then
         PlantControllers.t8.setWorkAllowed(false)
+        print("failed to find desired control signal in ouput string: ", successSensorString)
         error("control signal conversion went wrong! this fully breaks t8 processing, we need to fix the code before we can continue")
     end
     return successString == "Yes"
