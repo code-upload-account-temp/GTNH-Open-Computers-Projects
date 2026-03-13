@@ -283,12 +283,34 @@ for addr, v in pairs(transposers) do
 
     elseif solids.lenses.present and solids.inputBus.present then
         print("T6 discovered at ", addr)
+        local LensSequence = {
+            "Orundum Lens",
+            "Amber Lens",
+            "Aer Lens",
+            "Emerald Lens",
+            "Mana Diamond Lens",
+            "Blue Topaz Lens",
+            "Amethyst Lens",
+            "Fluor-Buergerite Lens",
+            "Dilithium Lens"
+        }
         InputTransposers.t6 = {
             proxy = transposer,
             lensesSide = solids.lenses.side,
             lensSlotMap = {}, 
             inputSide = solids.inputBus.side
         }
+        for i = 1,InputTransposers.t6.proxy.getInventorySize(InputTransposers.t6.lensesSide) do
+            local stack = InputTransposers.t6.proxy.getStackInSlot(InputTransposers.t6.lensesSide, i)
+            if stack ~= nil then
+                InputTransposers.t6.lensSlotMap[stack.label] = i
+            end
+        end
+        for _,lens in pairs(LensSequence) do
+            if InputTransposers.t6.lensSlotMap[lens] == nil and lens ~= "Dilithium Lens" then
+                error(string.format("Missing lens %s in T6, only Dilithium is allowed missing", lens))
+            end
+        end
 
     -- T7
 

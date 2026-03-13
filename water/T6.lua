@@ -17,12 +17,6 @@ local Dilithium = "Dilithium Lens"
 function RunT6(targetLevel)
     local levels = GetFluidLevels()
     local transposer = InputTransposers.t6
-    for i = 1,transposer.proxy.getInventorySize(transposer.lensesSide) do
-        local stack = transposer.proxy.getStackInSlot(transposer.lensesSide, i)
-        if stack ~= nil then
-            transposer.lensSlotMap[stack.label] = i
-        end
-    end
     while levels.t6 < targetLevel and levels.t5 >= T5_MAINTAIN do
         if not PlantControllers.t6.isWorkAllowed() then
             PlantControllers.t6.setWorkAllowed(true)
