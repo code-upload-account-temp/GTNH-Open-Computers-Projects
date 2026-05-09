@@ -35,6 +35,34 @@ function RunT7(targetLevel)
         if not PlantControllers.t7.isWorkAllowed() then
             PlantControllers.t7.setWorkAllowed(true)
         end
+        if levels.heliumGas <= 20000 then
+            print("Insufficient helium!")
+            print(string.format("Ending T7 run at fluid levels:\nT7 Water: %i, Helium: %i, Neon: %i, Krypton: %i, Xenon: %i, Neutronium: %i, Superconductor: %i, T6 Water: %i", levels.t7, levels.heliumGas, levels.neonGas, levels.kryptonGas, levels.xenonGas, levels.neutronium, levels.superConductorBase, levels.t6))
+        end
+        if levels.neonGas <= 1500 then
+            print("Insufficient neon!")
+            print(string.format("Ending T7 run at fluid levels:\nT7 Water: %i, Helium: %i, Neon: %i, Krypton: %i, Xenon: %i, Neutronium: %i, Superconductor: %i, T6 Water: %i", levels.t7, levels.heliumGas, levels.neonGas, levels.kryptonGas, levels.xenonGas, levels.neutronium, levels.superConductorBase, levels.t6))
+        end
+        if levels.kryptonGas <= 10000 then
+            print("Insufficient krypton!")
+            print(string.format("Ending T7 run at fluid levels:\nT7 Water: %i, Helium: %i, Neon: %i, Krypton: %i, Xenon: %i, Neutronium: %i, Superconductor: %i, T6 Water: %i", levels.t7, levels.heliumGas, levels.neonGas, levels.kryptonGas, levels.xenonGas, levels.neutronium, levels.superConductorBase, levels.t6))
+        end
+        if levels.xenonGas <= 5000 then
+            print("Insufficient xenon!")
+            print(string.format("Ending T7 run at fluid levels:\nT7 Water: %i, Helium: %i, Neon: %i, Krypton: %i, Xenon: %i, Neutronium: %i, Superconductor: %i, T6 Water: %i", levels.t7, levels.heliumGas, levels.neonGas, levels.kryptonGas, levels.xenonGas, levels.neutronium, levels.superConductorBase, levels.t6))
+        end
+        if levels.neutronium <= 10000 then
+            print("Insufficient neutronium!")
+            print(string.format("Ending T7 run at fluid levels:\nT7 Water: %i, Helium: %i, Neon: %i, Krypton: %i, Xenon: %i, Neutronium: %i, Superconductor: %i, T6 Water: %i", levels.t7, levels.heliumGas, levels.neonGas, levels.kryptonGas, levels.xenonGas, levels.neutronium, levels.superConductorBase, levels.t6))
+        end
+        if levels.superConductorBase <= 3000 then
+            print("Insufficient superconductor base!")
+            print(string.format("Ending T7 run at fluid levels:\nT7 Water: %i, Helium: %i, Neon: %i, Krypton: %i, Xenon: %i, Neutronium: %i, Superconductor: %i, T6 Water: %i", levels.t7, levels.heliumGas, levels.neonGas, levels.kryptonGas, levels.xenonGas, levels.neutronium, levels.superConductorBase, levels.t6))
+        end
+        if levels.t6 <= T6_MAINTAIN then
+            print("Insufficient T6 water!")
+            print(string.format("Ending T7 run at fluid levels:\nT7 Water: %i, Helium: %i, Neon: %i, Krypton: %i, Xenon: %i, Neutronium: %i, Superconductor: %i, T6 Water: %i", levels.t7, levels.heliumGas, levels.neonGas, levels.kryptonGas, levels.xenonGas, levels.neutronium, levels.superConductorBase, levels.t6))
+        end
         while levels.t7 < targetLevel and levels.heliumGas > 20000 and levels.neonGas > 1500 and levels.kryptonGas > 10000 and levels.xenonGas > 5000 and levels.neutronium > 10000 and levels.superConductorBase > 3000 and levels.t6 > T6_MAINTAIN do
             WaitForNextCycle(-1)
             local bit4, bit3, bit2, bit1 = getControlSignal()
